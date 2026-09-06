@@ -2,152 +2,153 @@
   "voice": "Samantha",
   "rate_wpm": 135,
   "speech_gain": 0.65,
+  "speech_tempo": 0.9,
   "sound_palette": "gentle-v1",
   "sample_rate": 16000,
   "words": {
     "apple": {
-      "samples": 7718,
-      "sha256_pcm": "e7dd717b21ad88e6d2027aabe176a97365b4a8de0bb13a59b7299ff644eaa8d7"
+      "samples": 8410,
+      "sha256_pcm": "4f9e923c241c1c1134318e6cf96df8f69723f9efabcc6c5f5f842976c4f4fe2c"
     },
     "baby": {
-      "samples": 7637,
-      "sha256_pcm": "8b1358d3993a03ff96a202b77d91fac79440619c6b8f49316b322aa5cfeabdbb"
+      "samples": 8257,
+      "sha256_pcm": "ad43cd09d47e68b23baa7e0cc07a424da74a425776176f8fcbd426df25336d5b"
     },
     "ball": {
-      "samples": 6067,
-      "sha256_pcm": "d8f9241586bb4666db2bc4886138a15a6840ff685c5fbe6771cd4b76429cc0a7"
+      "samples": 6527,
+      "sha256_pcm": "fce46abe622c92c7a8a02fac96255243a1ff1d618897569d089d7e15870d37c5"
     },
     "banana": {
-      "samples": 8752,
-      "sha256_pcm": "e5503b21c724e604ef0a45511e9725b0455f15acf6b28f8bddb86566b12852fe"
+      "samples": 9561,
+      "sha256_pcm": "39f1b9814cc4aa78ce58c82eb70ba07bb30ee9b481aaaca52672ddc6fcd138d7"
     },
     "bear": {
-      "samples": 5509,
-      "sha256_pcm": "a9352613674304b1592ef69616bad63413f31dbd6bcb889e3a6f02be7a75a5b2"
+      "samples": 5864,
+      "sha256_pcm": "4a4a900853960ffc6d6a9482cfe0e6c93d7b4d4176fe0b41ffb8fb467a3bbe6e"
     },
     "bee": {
-      "samples": 5324,
-      "sha256_pcm": "2fa17f913a6c64e15b0bd47109dbc2d2d9a4e01835ff033e72ecd6e1dc1a0678"
+      "samples": 5623,
+      "sha256_pcm": "413dec48dea8c668da45d2e6c1f9d48ef8b66aff8d2fff88581bf79952e79d49"
     },
     "bird": {
-      "samples": 5694,
-      "sha256_pcm": "77fd17907d7778c729f3f257b021f8166ebdce665ae25787f21019f7dfc97468"
+      "samples": 6051,
+      "sha256_pcm": "e18d09caabe7aa41f20935995b7b5b656ab94a96796e3d52eb01f2540c99f555"
     },
     "blue": {
-      "samples": 6252,
-      "sha256_pcm": "345208e0c8af72303b8ec1b6405daaddad836a247bb07f5d1a58535c7fa781e3"
+      "samples": 6776,
+      "sha256_pcm": "45d9ad390571992398a3de437aa81690bcd6ff6cb3f121eb6ebe4cb389322226"
     },
     "boat": {
-      "samples": 6029,
-      "sha256_pcm": "2536847bec32354981bb58b85df1856853bfc2533a3f6c36866dcad18f50c1d6"
+      "samples": 6371,
+      "sha256_pcm": "1396d06d34b9b4b0017c2d6bf3960361c27753e309f5c6a921c42ac1c009a3d6"
     },
     "bunny": {
-      "samples": 6522,
-      "sha256_pcm": "c0d249e40a832876dd1494b493b1d43afee6f9a40dfd83bdf58010981534081a"
+      "samples": 6966,
+      "sha256_pcm": "143510c8a9593aee770d4f006d3f25ffbc013b75c81ad492d606b7efc96ccedc"
     },
     "bus": {
-      "samples": 7553,
-      "sha256_pcm": "350a7fa7b10958297d5af61e9dc9b85163ed4b36ce7d3c9116990676d90eee2b"
+      "samples": 8188,
+      "sha256_pcm": "29f194c03586164c94c27289fe64e43c469abfb15213d3a448d1ba55c6f82313"
     },
     "cake": {
-      "samples": 7990,
-      "sha256_pcm": "820e6acc1cbea9ca660d12b667d1615601d0ec2d1ace8b4b6b3326ce034f5faa"
+      "samples": 8571,
+      "sha256_pcm": "43264d05569660cbed81a189de177208a389a253678f6bcbf1b581288f44ec7a"
     },
     "car": {
-      "samples": 6689,
-      "sha256_pcm": "fbba2fbced9985129efb91e0e7842633a2de68c18d107c8b681dfdf9ab9b2c42"
+      "samples": 7237,
+      "sha256_pcm": "5c5fa402210f2556d08caf4062362f86f2c8be64e6a157b04631996b76ed446a"
     },
     "cat": {
-      "samples": 7130,
-      "sha256_pcm": "639d0ade53188a57909253ec748e66acbff7dd7c0c1c1f7bcfb4e3059793ee90"
+      "samples": 7620,
+      "sha256_pcm": "d9efc1d3b071c9a861876d2e6ccc4a0b56f6694ead4f8045b93045aabe75dbe0"
     },
     "cow": {
-      "samples": 7804,
-      "sha256_pcm": "dce1f5377a614c3ec01ebe89db11730ff1b08f7c451a925be517b4f516c7b025"
+      "samples": 8418,
+      "sha256_pcm": "c4dc369b32ac73e7554a9d69129573650e2e3ab98a092858d8334b9ffb04facf"
     },
     "dad": {
-      "samples": 6303,
-      "sha256_pcm": "33cf97e3e29754ecbe9478897b11208d5456caafc2743b037f860e829391e355"
+      "samples": 6764,
+      "sha256_pcm": "22f87bf25e081ce3d3fc8f87c4aca9ee40ab74024d11d4a9fb6e82b1fecc4ddf"
     },
     "dog": {
-      "samples": 6305,
-      "sha256_pcm": "8b964a8abe2874ad6518335f021965fc8b180496990c4f0b6ab9b7eb4cc409db"
+      "samples": 6754,
+      "sha256_pcm": "96e12f31464196a2d6b0b5729eecffff5af0614147f4c9eb82a0cc1bf4594a89"
     },
     "duck": {
-      "samples": 6030,
-      "sha256_pcm": "f96c2e04db76cd626d0c41f97d12a5ca0192f74bf9fb0be6e6b456c499b1be3b"
+      "samples": 6469,
+      "sha256_pcm": "54efb2475bd46c1da86fb60d2c8dfa8709740176bb137cb513cd0ec39649814a"
     },
     "egg": {
-      "samples": 5134,
-      "sha256_pcm": "6338748dad5a1d8dff9fec8ec1943afb475aa16b04a175775b7aa3e88b384232"
+      "samples": 5515,
+      "sha256_pcm": "847b43f33a9a861790e8541d3ea65df34534f9983471e91a8fc0405387b91146"
     },
     "fish": {
-      "samples": 7660,
-      "sha256_pcm": "3fd5a57765e764e313a02f41a40a61e8a5906106314a777ab30f4d36de7d25e0"
+      "samples": 8278,
+      "sha256_pcm": "6a685e826fa90169dd2d3158088a0e1e19b4a0eef7c4632eb66fc52cd6dd02f0"
     },
     "flower": {
-      "samples": 8395,
-      "sha256_pcm": "ac6d4b0d663b85a0be80b0e4cf632eb36803d906e713b163eb2dd5dcd573ff61"
+      "samples": 9111,
+      "sha256_pcm": "5268623103521e695fac8ef071ed31048665acadbbfec0d3c9398246e6d41c64"
     },
     "frog": {
-      "samples": 8290,
-      "sha256_pcm": "0c92707e2458c190216338635048ec0926f59792d13323062f7fe91a9eff63b4"
+      "samples": 8884,
+      "sha256_pcm": "43ac7a451c4627cc4f86857c1a32788800167e30828cb8a3bd3f246ee59a198a"
     },
     "green": {
-      "samples": 7506,
-      "sha256_pcm": "3085b22064466918543cb5d55b7e3094b3120e6a66265bb30082914f9b8bba48"
+      "samples": 8135,
+      "sha256_pcm": "ab6251308b61de4fcdca74618a154c1e8029c53e372860b8e2cdd2c5b4bccf80"
     },
     "happy": {
-      "samples": 8819,
-      "sha256_pcm": "017870149d2e7120a5659e14557346f6b30b33d2c6e8fa0a3f52f1df9ebba3f5"
+      "samples": 9546,
+      "sha256_pcm": "ce56046659a3fb7fda5e3efeca87aab0e7c52339266023a99e3e1432b0ca054e"
     },
     "hello": {
-      "samples": 9562,
-      "sha256_pcm": "94b3799cf9221a40c85d31df095932f09bb3b09a879845a4a5aa6103bbefab59"
+      "samples": 10489,
+      "sha256_pcm": "f5724d81688f30d01ecbb063ca793da41457fbe2e5836fa6079f5a57f658c513"
     },
     "love": {
-      "samples": 6535,
-      "sha256_pcm": "30dd3076291f44e049aabbf1be0150be5cf60159467381b85553098cd556f72c"
+      "samples": 6981,
+      "sha256_pcm": "65a7d08e2fefae8f21e05f57d54cdf1e9ee8781cf25fc04f60e74f219c0ea127"
     },
     "milk": {
-      "samples": 6432,
-      "sha256_pcm": "cc3aaab48ef10ea59ca2a375efefbf893d70a9052d455cc8af36ebb9b41e728c"
+      "samples": 6826,
+      "sha256_pcm": "b57407fcb0ef17e46d7119f273181cd1747df58be6435df49d658da4687792c7"
     },
     "mom": {
-      "samples": 7473,
-      "sha256_pcm": "46001a6a979dfd35a656582f4147f3f7c7d671cda5ab6c98eac632e3aa6968d9"
+      "samples": 8038,
+      "sha256_pcm": "ed1ba6bcc9594313611a795cff82fbbd696408bd54ddc9eceaf81b398230c7cb"
     },
     "moon": {
-      "samples": 6916,
-      "sha256_pcm": "cf95ee1631780ff823b3cb2d599c12a81e7724ae06a5418e6b1a73b0ac6bacc3"
+      "samples": 7446,
+      "sha256_pcm": "2c565488d8de9e5a475e5228d00ae6a94b36397ae6e6fb3d9fad2ea16e30cfb7"
     },
     "pig": {
-      "samples": 5496,
-      "sha256_pcm": "8b215e7db66ee3d3e66046569d83151573ecdedadaae6ff9713f07adb4b53bc8"
+      "samples": 5839,
+      "sha256_pcm": "9e5310f49033c7fa16297e6ec9b0eff6e76f02cc8b4197994023812d615f2e46"
     },
     "rain": {
-      "samples": 6958,
-      "sha256_pcm": "476727d25c207ca434163cb6bcf5c6b4ac6188ba7443c3731ae7a17b1a61f3b5"
+      "samples": 7544,
+      "sha256_pcm": "95742372dcab1428d3202dda61fc4009cb1f73aaf3dd6ed22716c0505251f900"
     },
     "red": {
-      "samples": 5844,
-      "sha256_pcm": "dd2321e5a167917a5eb0b7d8eb9cff95effb3ac908c28f0bfad9ffe65f3ef1d8"
+      "samples": 6192,
+      "sha256_pcm": "4bfb84e05cc6a8b03752ff8393afac21290c22c3a66264181b6fdf89d9e92c03"
     },
     "star": {
-      "samples": 8367,
-      "sha256_pcm": "b078196486e3154178f105ec233d7b0cd03a482c988ef30d58b4829acdef25e9"
+      "samples": 9026,
+      "sha256_pcm": "4c6e7c3ae081f1d1b42a8c4a0cc1775447e4e12db62e2e9f134f4bedb0b20e3e"
     },
     "sun": {
-      "samples": 8923,
-      "sha256_pcm": "eaae266e6a04ba96b9da05d8071d841ce88690f508650d22d91821ff7de310c9"
+      "samples": 9659,
+      "sha256_pcm": "44cdc414034c5c04ad4f3999f7cd3debe2e0a16ade293015410fd89175c55053"
     },
     "tree": {
-      "samples": 6504,
-      "sha256_pcm": "dcb00367c28acdf67df324d213e5d00b457663c4dc02244984680315acbdece0"
+      "samples": 7001,
+      "sha256_pcm": "83c31d7a69041a6395e65d5fe018f4747132d6e0759143b0b7e938de3b3dde99"
     },
     "yellow": {
-      "samples": 8394,
-      "sha256_pcm": "427441547c3c4f14dba5195315aab6c0d07ec505fa6d04b54c5917bbaf1f5f50"
+      "samples": 9081,
+      "sha256_pcm": "704481d5de923079f491e6cd79e0ed9eb65eb83f9929a313841224fb2a71dae3"
     }
   }
 }

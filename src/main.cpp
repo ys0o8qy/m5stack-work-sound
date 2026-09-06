@@ -287,7 +287,7 @@ void setup() {
     M5Cardputer.Display.setTextColor(TFT_WHITE);
     M5Cardputer.Display.drawString("Display memory error", 10, 40);
   }
-  logLine("BOOT Little Wonders 1.1"); status();
+  logLine("BOOT Little Wonders 1.2 gentle audio"); status();
 }
 
 void loop() {
