@@ -1,0 +1,153 @@
+{
+  "voice": "Samantha",
+  "rate_wpm": 135,
+  "speech_gain": 0.65,
+  "sound_palette": "gentle-v1",
+  "sample_rate": 16000,
+  "words": {
+    "apple": {
+      "samples": 7718,
+      "sha256_pcm": "e7dd717b21ad88e6d2027aabe176a97365b4a8de0bb13a59b7299ff644eaa8d7"
+    },
+    "baby": {
+      "samples": 7637,
+      "sha256_pcm": "8b1358d3993a03ff96a202b77d91fac79440619c6b8f49316b322aa5cfeabdbb"
+    },
+    "ball": {
+      "samples": 6067,
+      "sha256_pcm": "d8f9241586bb4666db2bc4886138a15a6840ff685c5fbe6771cd4b76429cc0a7"
+    },
+    "banana": {
+      "samples": 8752,
+      "sha256_pcm": "e5503b21c724e604ef0a45511e9725b0455f15acf6b28f8bddb86566b12852fe"
+    },
+    "bear": {
+      "samples": 5509,
+      "sha256_pcm": "a9352613674304b1592ef69616bad63413f31dbd6bcb889e3a6f02be7a75a5b2"
+    },
+    "bee": {
+      "samples": 5324,
+      "sha256_pcm": "2fa17f913a6c64e15b0bd47109dbc2d2d9a4e01835ff033e72ecd6e1dc1a0678"
+    },
+    "bird": {
+      "samples": 5694,
+      "sha256_pcm": "77fd17907d7778c729f3f257b021f8166ebdce665ae25787f21019f7dfc97468"
+    },
+    "blue": {
+      "samples": 6252,
+      "sha256_pcm": "345208e0c8af72303b8ec1b6405daaddad836a247bb07f5d1a58535c7fa781e3"
+    },
+    "boat": {
+      "samples": 6029,
+      "sha256_pcm": "2536847bec32354981bb58b85df1856853bfc2533a3f6c36866dcad18f50c1d6"
+    },
+    "bunny": {
+      "samples": 6522,
+      "sha256_pcm": "c0d249e40a832876dd1494b493b1d43afee6f9a40dfd83bdf58010981534081a"
+    },
+    "bus": {
+      "samples": 7553,
+      "sha256_pcm": "350a7fa7b10958297d5af61e9dc9b85163ed4b36ce7d3c9116990676d90eee2b"
+    },
+    "cake": {
+      "samples": 7990,
+      "sha256_pcm": "820e6acc1cbea9ca660d12b667d1615601d0ec2d1ace8b4b6b3326ce034f5faa"
+    },
+    "car": {
+      "samples": 6689,
+      "sha256_pcm": "fbba2fbced9985129efb91e0e7842633a2de68c18d107c8b681dfdf9ab9b2c42"
+    },
+    "cat": {
+      "samples": 7130,
+      "sha256_pcm": "639d0ade53188a57909253ec748e66acbff7dd7c0c1c1f7bcfb4e3059793ee90"
+    },
+    "cow": {
+      "samples": 7804,
+      "sha256_pcm": "dce1f5377a614c3ec01ebe89db11730ff1b08f7c451a925be517b4f516c7b025"
+    },
+    "dad": {
+      "samples": 6303,
+      "sha256_pcm": "33cf97e3e29754ecbe9478897b11208d5456caafc2743b037f860e829391e355"
+    },
+    "dog": {
+      "samples": 6305,
+      "sha256_pcm": "8b964a8abe2874ad6518335f021965fc8b180496990c4f0b6ab9b7eb4cc409db"
+    },
+    "duck": {
+      "samples": 6030,
+      "sha256_pcm": "f96c2e04db76cd626d0c41f97d12a5ca0192f74bf9fb0be6e6b456c499b1be3b"
+    },
+    "egg": {
+      "samples": 5134,
+      "sha256_pcm": "6338748dad5a1d8dff9fec8ec1943afb475aa16b04a175775b7aa3e88b384232"
+    },
+    "fish": {
+      "samples": 7660,
+      "sha256_pcm": "3fd5a57765e764e313a02f41a40a61e8a5906106314a777ab30f4d36de7d25e0"
+    },
+    "flower": {
+      "samples": 8395,
+      "sha256_pcm": "ac6d4b0d663b85a0be80b0e4cf632eb36803d906e713b163eb2dd5dcd573ff61"
+    },
+    "frog": {
+      "samples": 8290,
+      "sha256_pcm": "0c92707e2458c190216338635048ec0926f59792d13323062f7fe91a9eff63b4"
+    },
+    "green": {
+      "samples": 7506,
+      "sha256_pcm": "3085b22064466918543cb5d55b7e3094b3120e6a66265bb30082914f9b8bba48"
+    },
+    "happy": {
+      "samples": 8819,
+      "sha256_pcm": "017870149d2e7120a5659e14557346f6b30b33d2c6e8fa0a3f52f1df9ebba3f5"
+    },
+    "hello": {
+      "samples": 9562,
+      "sha256_pcm": "94b3799cf9221a40c85d31df095932f09bb3b09a879845a4a5aa6103bbefab59"
+    },
+    "love": {
+      "samples": 6535,
+      "sha256_pcm": "30dd3076291f44e049aabbf1be0150be5cf60159467381b85553098cd556f72c"
+    },
+    "milk": {
+      "samples": 6432,
+      "sha256_pcm": "cc3aaab48ef10ea59ca2a375efefbf893d70a9052d455cc8af36ebb9b41e728c"
+    },
+    "mom": {
+      "samples": 7473,
+      "sha256_pcm": "46001a6a979dfd35a656582f4147f3f7c7d671cda5ab6c98eac632e3aa6968d9"
+    },
+    "moon": {
+      "samples": 6916,
+      "sha256_pcm": "cf95ee1631780ff823b3cb2d599c12a81e7724ae06a5418e6b1a73b0ac6bacc3"
+    },
+    "pig": {
+      "samples": 5496,
+      "sha256_pcm": "8b215e7db66ee3d3e66046569d83151573ecdedadaae6ff9713f07adb4b53bc8"
+    },
+    "rain": {
+      "samples": 6958,
+      "sha256_pcm": "476727d25c207ca434163cb6bcf5c6b4ac6188ba7443c3731ae7a17b1a61f3b5"
+    },
+    "red": {
+      "samples": 5844,
+      "sha256_pcm": "dd2321e5a167917a5eb0b7d8eb9cff95effb3ac908c28f0bfad9ffe65f3ef1d8"
+    },
+    "star": {
+      "samples": 8367,
+      "sha256_pcm": "b078196486e3154178f105ec233d7b0cd03a482c988ef30d58b4829acdef25e9"
+    },
+    "sun": {
+      "samples": 8923,
+      "sha256_pcm": "eaae266e6a04ba96b9da05d8071d841ce88690f508650d22d91821ff7de310c9"
+    },
+    "tree": {
+      "samples": 6504,
+      "sha256_pcm": "dcb00367c28acdf67df324d213e5d00b457663c4dc02244984680315acbdece0"
+    },
+    "yellow": {
+      "samples": 8394,
+      "sha256_pcm": "427441547c3c4f14dba5195315aab6c0d07ec505fa6d04b54c5917bbaf1f5f50"
+    }
+  }
+}

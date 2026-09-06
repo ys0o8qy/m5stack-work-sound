@@ -1,0 +1,10 @@
+.pio/
+.tools/
+.cache/
+.venv/
+.DS_Store
+__pycache__/
+artifacts/backups/
+artifacts/*.log
+.codebase-memory/
+
