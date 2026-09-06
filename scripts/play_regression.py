@@ -42,7 +42,9 @@ def run():
             seen.add(field(event, 'effect'))
             playing = command(device, 'status', 'STATUS')
             assert field(playing, 'sounds') == field(before, 'sounds') + 1
-            assert field(playing, 'effects_playing') > 0, letter
+            # Read the MCU's immediate observation, not a later host query:
+            # USB/host scheduling can deliver status after a short clip ends.
+            assert field(event, 'effect_playing') > 0, letter
             assert field(playing, 'speech_playing') == 0
             if letter in 'abcd':
                 time.sleep(.06)
@@ -77,10 +79,10 @@ def run():
         until(device, 'ROUND match=watermelon speech=1', 2)
         send(device, 'key b')
         until(device, 'SPEECH interrupted')
-        until(device, '^KEY')
+        event = until(device, '^KEY')
         status = command(device, 'status', 'STATUS')
         assert field(status, 'speech_playing') == 0
-        assert field(status, 'effects_playing') > 0
+        assert field(event, 'effect_playing') > 0
         assert status.endswith('input=b')
         print('PASS immediate speech interruption and effect recovery', flush=True)
     finally:

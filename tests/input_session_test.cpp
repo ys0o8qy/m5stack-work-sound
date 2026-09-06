@@ -9,6 +9,8 @@
 using toy::InputSession;
 
 int main() {
+  assert(toy::kDefaultIdleMs == 3000); // Explicit user preference, not an incidental implementation value.
+  assert(toy::kDefaultVolume > 0 && toy::kDefaultVolume <= toy::kMaxVolume);
   for (uint16_t key = 'a'; key <= 'z'; ++key) {
     auto lower = toy::styleForKey(key), upper = toy::styleForKey(key - 32);
     assert(lower.color == upper.color && lower.animation == upper.animation && lower.effect == upper.effect);
@@ -63,6 +65,8 @@ int main() {
     }
     assert(peak >= 12000 && peak <= 26000);
     assert(std::sqrt(energy / 1600) >= 8000);
+    const double master = toy::kDefaultVolume / 255.0;
+    assert(std::sqrt(energy / 1600) * master * master >= 500);
   }
   std::cout << "PASS stable letter identities, timing, configurable delay, held keys, reset, normalization, invalid input, overflow, rollover, "
             << toy::kWordCount << " speech clips and 20 effects\n";

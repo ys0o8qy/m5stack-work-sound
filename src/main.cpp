@@ -109,8 +109,9 @@ void textKey(char value, uint32_t now, uint16_t identity = 0) {
   else input.touch(now);
   visuals.setInput(input.text(), now, value == '\b');
   auto style = styleForKey(identity);
-  if (Serial) Serial.printf("KEY at_ms=%lu length=%u identity=%u color=%u animation=%u effect=%u\n",
-      (unsigned long)now, unsigned(strlen(input.text())), identity, style.color, style.animation, style.effect);
+  if (Serial) Serial.printf("KEY at_ms=%lu length=%u identity=%u color=%u animation=%u effect=%u effect_playing=%d\n",
+      (unsigned long)now, unsigned(strlen(input.text())), identity, style.color, style.animation, style.effect,
+      int(M5Cardputer.Speaker.isPlaying(0)));
 }
 
 void openSettings() {
