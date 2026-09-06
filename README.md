@@ -32,8 +32,8 @@
 | 取消更改 | 左上角反引号键，或再次长按 G0 |
 
 可调整等待时间（1–15 秒，步长 1 秒）、音量和屏幕亮度。保存后断电仍保留。
-默认等待 3 秒，音量 64/255，亮度 130/255；设置页面显示相对于硬件刻度的百分比。
-音量调整上限是 160/255。
+默认等待 3 秒，音量 80/255，亮度 130/255；设置页面显示相对于硬件刻度的百分比。
+音量调整上限是 160/255；调整时立即播放短音，方便试听。
 
 首次启动的默认值集中在 [`include/toy_config.h`](include/toy_config.h)。
 已经保存过的设备设置优先于代码默认值；修改代码默认值不会覆盖设备已有设置。
@@ -56,13 +56,11 @@
 - 为避免孩子误按 Fn/Caps 进入另一套按键层，玩具固定使用按键上第一层字符。
 - 输入最多保存 24 个字符；超长后本轮不朗读，不会误读截断后的前缀或后缀。
 
-第一版内置 36 个词，完整列表见 [`assets/words.txt`](assets/words.txt)：
+当前内置 **143 个词**，完整列表见 [`assets/words.txt`](assets/words.txt)，覆盖动物、食物、交通工具、家庭物品、身体部位、颜色、数字和简单动作。
 
-```text
-apple baby ball banana bear bee bird blue boat bunny bus cake
-car cat cow dad dog duck egg fish flower frog green happy
-hello love milk mom moon pig rain red star sun tree yellow
-```
+例如 `elephant`、`butterfly`、`watermelon`、`train`、`rainbow`、`book`、`hand`、`one` 到 `ten`。
+每个词都有图案映射，共 121 种图案；`rabbit/bunny`、`mom/mommy/mother` 等共用相关图案，但显示和朗读实际输入的词。
+`icecream` 是本玩具的连续输入写法；含空格输入仍不匹配。
 
 ## 本地开发
 
@@ -92,18 +90,19 @@ Python 依赖记录在 `requirements-dev.lock`。
 
 ## 音频与扩展
 
-36 个英文词使用本机 macOS Samantha 英语语音生成，135 词/分钟，再以 0.9 倍速保留音调放慢，降低响度并柔化高频；
+143 个英文词使用本机 macOS Samantha 英语语音生成，135 词/分钟，再以 0.9 倍速保留音调放慢，降低响度并柔化高频；
 以 16kHz、单声道、16 位 PCM 存在固件 Flash 中。
 四种原创合成音效为圆润水滴、柔和钢琴、轻木音、摇篮曲和声音色，各有五个音高，共 20 段。
-采用较低的五声音阶，移除尖锐扫频和夸张弹簧声，降低响度，使用 22–55 毫秒渐入和柔和消退。
+使用 523–880 Hz 的中频五声音阶和 12–24 毫秒渐入、柔和消退。避免因过低音高和过弱素材导致小扬声器听不清。
+按键音和朗读分别使用通道 0/1，朗读通道音量为 204/255；提高按键反馈可听性时维持语音柔和。
 快速按键只切换音效而不排队；每个按键仍对应固定音色。
 
 已生成的音频源码位于 `src/generated/`，正常构建不需要安装语音服务或 ffmpeg。
 若需要调整词库：
 
 1. 修改 `assets/words.txt`，保持字母排序、去重。
-2. 在 Mac 上安装好 `ffmpeg`，运行 `python3 scripts/generate_audio.py`。
-3. 在 `src/toy_visuals.cpp` 为新词补充图案；未实现专用图案时显示友好面孔。
+2. 同步图案映射后，在 Mac 上安装好 `ffmpeg`，运行 `python3 scripts/generate_audio.py`。
+3. 在 `assets/word_visuals.json` 为每个词指定图案，在 `src/toy_visuals.cpp` 或 `src/word_visuals.cpp` 实现；缺少图案会使回归测试失败。
 4. 运行测试、编译、重新刷写。
 
 生成器需要访问本机语音服务；在限制该服务的沙盒中可能只得到空音频，脚本会检测并报错。
@@ -113,11 +112,15 @@ Python 依赖记录在 `requirements-dev.lock`。
 
 `./scripts/test.sh` 使用本机 C++ 编译器与 AddressSanitizer/UndefinedBehaviorSanitizer，
 检查等待边界、配置时间、长按计时、清空、大小写、无效字符、溢出、时钟回绕及全部音频素材。
+Python 用例同时检查词库不意外缩减、所有语音与图案完整、PCM 校验和、音效起音 RMS/峰值/频率范围。
+真机新增用例检查 20 种音效完整播放、四类动画随时间变化、底部输入栏稳定、新词朗读和打断后按键音恢复。
+这些是行为与参数检查，不使用容易被正常美术调整破坏的固定截图金样。
 
 真机 USB 集成检查：
 
 ```sh
 ./.venv/bin/python scripts/hardware_test.py
+./.venv/bin/python scripts/play_regression.py
 ```
 
 执行时请先不要碰键盘；测试会发声，临时修改等待时间，重启设备验证设置持久化，

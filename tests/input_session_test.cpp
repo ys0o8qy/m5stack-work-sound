@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstring>
 #include <iostream>
+#include <cmath>
 
 using toy::InputSession;
 
@@ -42,6 +43,7 @@ int main() {
   for (size_t i = 0; i < toy::kWordCount; ++i) {
     const auto& word = toy::kWords[i];
     assert(word.clip.data && word.clip.samples >= 1600);
+    assert(word.illustration && strlen(word.illustration));
     assert(strlen(word.word) <= toy::kMaxInput);
     if (i) assert(strcmp(toy::kWords[i - 1].word, word.word) < 0);
     int peak = 0;
@@ -51,6 +53,16 @@ int main() {
   for (const auto& clip : toy::kEffects) {
     assert(clip.samples < 16000 / 2);
     assert(std::abs(int(clip.data[0])) < 100 && std::abs(int(clip.data[clip.samples - 1])) < 100);
+    // Catch the actual regression: a valid but almost inaudible short clip.
+    double energy = 0;
+    int peak = 0;
+    for (size_t i = 0; i < clip.samples; ++i) {
+      int sample = clip.data[i];
+      peak = std::max(peak, std::abs(sample));
+      if (i < 1600) energy += double(sample) * sample;
+    }
+    assert(peak >= 12000 && peak <= 26000);
+    assert(std::sqrt(energy / 1600) >= 8000);
   }
   std::cout << "PASS stable letter identities, timing, configurable delay, held keys, reset, normalization, invalid input, overflow, rollover, "
             << toy::kWordCount << " speech clips and 20 effects\n";

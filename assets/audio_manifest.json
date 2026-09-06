@@ -3,152 +3,723 @@
   "rate_wpm": 135,
   "speech_gain": 0.65,
   "speech_tempo": 0.9,
-  "sound_palette": "gentle-v1",
+  "sound_palette": "gentle-audible-v2",
   "sample_rate": 16000,
   "words": {
+    "airplane": {
+      "samples": 12920,
+      "sha256_pcm": "3146d9e96c611be43138c50237b53555e5d84391bd11d9b7092ffc7925db34cd",
+      "illustration": "plane"
+    },
+    "ant": {
+      "samples": 7232,
+      "sha256_pcm": "6c57bca1e8ae03bae7af0c079d4e617e168dc85ed3b2a85f015ccaebd991feeb",
+      "illustration": "ant"
+    },
     "apple": {
       "samples": 8410,
-      "sha256_pcm": "4f9e923c241c1c1134318e6cf96df8f69723f9efabcc6c5f5f842976c4f4fe2c"
+      "sha256_pcm": "4f9e923c241c1c1134318e6cf96df8f69723f9efabcc6c5f5f842976c4f4fe2c",
+      "illustration": "apple"
     },
     "baby": {
       "samples": 8257,
-      "sha256_pcm": "ad43cd09d47e68b23baa7e0cc07a424da74a425776176f8fcbd426df25336d5b"
+      "sha256_pcm": "ad43cd09d47e68b23baa7e0cc07a424da74a425776176f8fcbd426df25336d5b",
+      "illustration": "baby"
     },
     "ball": {
       "samples": 6527,
-      "sha256_pcm": "fce46abe622c92c7a8a02fac96255243a1ff1d618897569d089d7e15870d37c5"
+      "sha256_pcm": "fce46abe622c92c7a8a02fac96255243a1ff1d618897569d089d7e15870d37c5",
+      "illustration": "ball"
     },
     "banana": {
       "samples": 9561,
-      "sha256_pcm": "39f1b9814cc4aa78ce58c82eb70ba07bb30ee9b481aaaca52672ddc6fcd138d7"
+      "sha256_pcm": "39f1b9814cc4aa78ce58c82eb70ba07bb30ee9b481aaaca52672ddc6fcd138d7",
+      "illustration": "banana"
     },
     "bear": {
       "samples": 5864,
-      "sha256_pcm": "4a4a900853960ffc6d6a9482cfe0e6c93d7b4d4176fe0b41ffb8fb467a3bbe6e"
+      "sha256_pcm": "4a4a900853960ffc6d6a9482cfe0e6c93d7b4d4176fe0b41ffb8fb467a3bbe6e",
+      "illustration": "bear"
+    },
+    "bed": {
+      "samples": 6043,
+      "sha256_pcm": "536766c968c1d7448752242bde5f189564373fbfe1bab6206d0d16c625fcacb9",
+      "illustration": "bed"
     },
     "bee": {
       "samples": 5623,
-      "sha256_pcm": "413dec48dea8c668da45d2e6c1f9d48ef8b66aff8d2fff88581bf79952e79d49"
+      "sha256_pcm": "413dec48dea8c668da45d2e6c1f9d48ef8b66aff8d2fff88581bf79952e79d49",
+      "illustration": "bee"
+    },
+    "big": {
+      "samples": 6530,
+      "sha256_pcm": "8684c215be5abc0bc312f5baccf6f25220edb4c80821cabeb2855b1a006a3ebc",
+      "illustration": "big"
+    },
+    "bike": {
+      "samples": 6030,
+      "sha256_pcm": "43db3def51eabe29fa82f878be6857dcfebf0f33a850c966f60a01fcc54f8db3",
+      "illustration": "bike"
     },
     "bird": {
       "samples": 6051,
-      "sha256_pcm": "e18d09caabe7aa41f20935995b7b5b656ab94a96796e3d52eb01f2540c99f555"
+      "sha256_pcm": "e18d09caabe7aa41f20935995b7b5b656ab94a96796e3d52eb01f2540c99f555",
+      "illustration": "bird"
+    },
+    "black": {
+      "samples": 7378,
+      "sha256_pcm": "e9ea519489e58080b916ca9b16bda43768914a0e75631d5267d777f45f403460",
+      "illustration": "black"
     },
     "blue": {
       "samples": 6776,
-      "sha256_pcm": "45d9ad390571992398a3de437aa81690bcd6ff6cb3f121eb6ebe4cb389322226"
+      "sha256_pcm": "45d9ad390571992398a3de437aa81690bcd6ff6cb3f121eb6ebe4cb389322226",
+      "illustration": "blue"
     },
     "boat": {
       "samples": 6371,
-      "sha256_pcm": "1396d06d34b9b4b0017c2d6bf3960361c27753e309f5c6a921c42ac1c009a3d6"
+      "sha256_pcm": "1396d06d34b9b4b0017c2d6bf3960361c27753e309f5c6a921c42ac1c009a3d6",
+      "illustration": "boat"
+    },
+    "book": {
+      "samples": 5195,
+      "sha256_pcm": "a302e976e7725c85c2a52f8266fccacae0deac0f5f3686792027b7abf74d7a47",
+      "illustration": "book"
+    },
+    "bowl": {
+      "samples": 6155,
+      "sha256_pcm": "cfc7bf5444be54fb7e711addf2c715804f24a3e23780672e363029eec8a52ee3",
+      "illustration": "bowl"
+    },
+    "boy": {
+      "samples": 7524,
+      "sha256_pcm": "4812740bf405e8c7e9cb8730082f3f5414a1d88818c7bbd0918fda39d2b34a14",
+      "illustration": "baby"
+    },
+    "bread": {
+      "samples": 6740,
+      "sha256_pcm": "c070a9c243d0523d4d83a67998ea1e68ca02c8ae35eca3ae73f7b94e1814160a",
+      "illustration": "bread"
+    },
+    "brown": {
+      "samples": 8767,
+      "sha256_pcm": "904f9402925ece985a70147f82f420a282cf3f3419528a0547d02669152fa168",
+      "illustration": "brown"
     },
     "bunny": {
       "samples": 6966,
-      "sha256_pcm": "143510c8a9593aee770d4f006d3f25ffbc013b75c81ad492d606b7efc96ccedc"
+      "sha256_pcm": "143510c8a9593aee770d4f006d3f25ffbc013b75c81ad492d606b7efc96ccedc",
+      "illustration": "bunny"
     },
     "bus": {
       "samples": 8188,
-      "sha256_pcm": "29f194c03586164c94c27289fe64e43c469abfb15213d3a448d1ba55c6f82313"
+      "sha256_pcm": "29f194c03586164c94c27289fe64e43c469abfb15213d3a448d1ba55c6f82313",
+      "illustration": "bus"
+    },
+    "butterfly": {
+      "samples": 12536,
+      "sha256_pcm": "2ea9f5fc821532aa7e6cc426d66e20f47a5fa424a4be9a3b299f64d904a8075f",
+      "illustration": "butterfly"
+    },
+    "bye": {
+      "samples": 7403,
+      "sha256_pcm": "61687f3ba877524f68824b059cd5558bd5f3bf1a903e8c19cc83ecdf62b0e34d",
+      "illustration": "hello"
     },
     "cake": {
       "samples": 8571,
-      "sha256_pcm": "43264d05569660cbed81a189de177208a389a253678f6bcbf1b581288f44ec7a"
+      "sha256_pcm": "43264d05569660cbed81a189de177208a389a253678f6bcbf1b581288f44ec7a",
+      "illustration": "cake"
     },
     "car": {
       "samples": 7237,
-      "sha256_pcm": "5c5fa402210f2556d08caf4062362f86f2c8be64e6a157b04631996b76ed446a"
+      "sha256_pcm": "5c5fa402210f2556d08caf4062362f86f2c8be64e6a157b04631996b76ed446a",
+      "illustration": "car"
+    },
+    "carrot": {
+      "samples": 8873,
+      "sha256_pcm": "d2277bd3221f0cf5cd81b1c9e7b5b5195b748f75a9871b51033113c2ab6fd452",
+      "illustration": "carrot"
     },
     "cat": {
       "samples": 7620,
-      "sha256_pcm": "d9efc1d3b071c9a861876d2e6ccc4a0b56f6694ead4f8045b93045aabe75dbe0"
+      "sha256_pcm": "d9efc1d3b071c9a861876d2e6ccc4a0b56f6694ead4f8045b93045aabe75dbe0",
+      "illustration": "cat"
+    },
+    "chair": {
+      "samples": 7276,
+      "sha256_pcm": "5b0c1b471b4eb619a698fbe98319ceb532298437c7aa8a680d30af2acd9f4b18",
+      "illustration": "chair"
+    },
+    "cheese": {
+      "samples": 9217,
+      "sha256_pcm": "67e75aec1f322b97565f56f64fee33d3f8601ec7c36aa5e15b66bac1cb07b21f",
+      "illustration": "cheese"
+    },
+    "cherry": {
+      "samples": 8328,
+      "sha256_pcm": "e03e4b64c594affbc298d757bf3459e0da5f56ecc47a819802ffc3b7021f1643",
+      "illustration": "cherry"
+    },
+    "chick": {
+      "samples": 6210,
+      "sha256_pcm": "7143cb9395d2d05b411633c480bbece619a8cc48323b7cdff5268eb860848df4",
+      "illustration": "bird"
+    },
+    "chicken": {
+      "samples": 9346,
+      "sha256_pcm": "eeaac33ccdd467fdcd6af5aed721cb5351fefb48c70d34a0dd0d1f62df450381",
+      "illustration": "bird"
+    },
+    "clap": {
+      "samples": 8250,
+      "sha256_pcm": "972ee9bf20ea8360b986760e9739174336c90b7ffcf8fb731ac98f3734935c89",
+      "illustration": "clap"
+    },
+    "clock": {
+      "samples": 8254,
+      "sha256_pcm": "944a964de083bc94a98f971c2e32a3be49bbb9cbad5219ff07ed63066f1ff867",
+      "illustration": "clock"
+    },
+    "cloud": {
+      "samples": 8379,
+      "sha256_pcm": "76d86295068981a894e124a678a589e279fdd8f99ff1b2f8d840b43328069a9b",
+      "illustration": "cloud"
+    },
+    "cookie": {
+      "samples": 8540,
+      "sha256_pcm": "7162e1997640d5173d8d70dd0f868dcbfe1174c3608283a675eed80110fc6d13",
+      "illustration": "cookie"
+    },
+    "corn": {
+      "samples": 9280,
+      "sha256_pcm": "182a3143d34dd0e7203957641e06976e1ec7b410273257757b0264d3fcb2eb44",
+      "illustration": "corn"
     },
     "cow": {
       "samples": 8418,
-      "sha256_pcm": "c4dc369b32ac73e7554a9d69129573650e2e3ab98a092858d8334b9ffb04facf"
+      "sha256_pcm": "c4dc369b32ac73e7554a9d69129573650e2e3ab98a092858d8334b9ffb04facf",
+      "illustration": "cow"
+    },
+    "crab": {
+      "samples": 8438,
+      "sha256_pcm": "db84c5349865a8c1df4f5efb809cd1148e42ddeef433d7b9dab958312522c678",
+      "illustration": "crab"
+    },
+    "cup": {
+      "samples": 7665,
+      "sha256_pcm": "d6eb07bd1f05a1279c096f456f92fa3c10d36db631710cd322d4ca4f5c81ba90",
+      "illustration": "cup"
+    },
+    "cupcake": {
+      "samples": 12587,
+      "sha256_pcm": "d833151f468d3a07ed45d21ed9149389d4c5fcdfe8973b803c220d9f2776011b",
+      "illustration": "cake"
     },
     "dad": {
       "samples": 6764,
-      "sha256_pcm": "22f87bf25e081ce3d3fc8f87c4aca9ee40ab74024d11d4a9fb6e82b1fecc4ddf"
+      "sha256_pcm": "22f87bf25e081ce3d3fc8f87c4aca9ee40ab74024d11d4a9fb6e82b1fecc4ddf",
+      "illustration": "dad"
+    },
+    "daddy": {
+      "samples": 7794,
+      "sha256_pcm": "85a1a8a4b5f69631b5e0b405fa203a6d827161c598c6bd6c13d9e167e87890b6",
+      "illustration": "dad"
+    },
+    "dinosaur": {
+      "samples": 14026,
+      "sha256_pcm": "3ade27b061cdd26ba9cf7fb3b6fa577e6e3f2df0286a4137fdb2ee6f6c782f1e",
+      "illustration": "dinosaur"
     },
     "dog": {
       "samples": 6754,
-      "sha256_pcm": "96e12f31464196a2d6b0b5729eecffff5af0614147f4c9eb82a0cc1bf4594a89"
+      "sha256_pcm": "96e12f31464196a2d6b0b5729eecffff5af0614147f4c9eb82a0cc1bf4594a89",
+      "illustration": "dog"
+    },
+    "drum": {
+      "samples": 8703,
+      "sha256_pcm": "df7a846d80a6a499b12a8480c0635a2c94b53e86d00f8326cebd7921f7f6ef6d",
+      "illustration": "drum"
     },
     "duck": {
       "samples": 6469,
-      "sha256_pcm": "54efb2475bd46c1da86fb60d2c8dfa8709740176bb137cb513cd0ec39649814a"
+      "sha256_pcm": "54efb2475bd46c1da86fb60d2c8dfa8709740176bb137cb513cd0ec39649814a",
+      "illustration": "duck"
+    },
+    "ear": {
+      "samples": 6347,
+      "sha256_pcm": "e4ee8b6ff24d4792b597b3a0e39d24a06a8dd6b9c75e40dc743e1bb2840507a8",
+      "illustration": "ear"
     },
     "egg": {
       "samples": 5515,
-      "sha256_pcm": "847b43f33a9a861790e8541d3ea65df34534f9983471e91a8fc0405387b91146"
+      "sha256_pcm": "847b43f33a9a861790e8541d3ea65df34534f9983471e91a8fc0405387b91146",
+      "illustration": "egg"
+    },
+    "eight": {
+      "samples": 6264,
+      "sha256_pcm": "f4c5c0e75630718af5c8807f77dc543b57386e6141228176fb3850cad81c3069",
+      "illustration": "eight"
+    },
+    "elephant": {
+      "samples": 11306,
+      "sha256_pcm": "b02aec832993b809658764ce54d555fa7ae12d342f92db4d723e5be5c28990fd",
+      "illustration": "elephant"
+    },
+    "eye": {
+      "samples": 6974,
+      "sha256_pcm": "9541dc9dea721c310e4ce1cf88e0f74be4c5c01104641115b72c38d18038f7e2",
+      "illustration": "eye"
+    },
+    "father": {
+      "samples": 9273,
+      "sha256_pcm": "7e04e20b60cf893ee97cd95a47cda7ca5484e95c4b285bf197ff6c6febccf1b4",
+      "illustration": "dad"
     },
     "fish": {
       "samples": 8278,
-      "sha256_pcm": "6a685e826fa90169dd2d3158088a0e1e19b4a0eef7c4632eb66fc52cd6dd02f0"
+      "sha256_pcm": "6a685e826fa90169dd2d3158088a0e1e19b4a0eef7c4632eb66fc52cd6dd02f0",
+      "illustration": "fish"
+    },
+    "five": {
+      "samples": 8455,
+      "sha256_pcm": "112aebcdba4c42d889f7692a0bc7263b8799516d0d445420629e52882afd0f35",
+      "illustration": "five"
     },
     "flower": {
       "samples": 9111,
-      "sha256_pcm": "5268623103521e695fac8ef071ed31048665acadbbfec0d3c9398246e6d41c64"
+      "sha256_pcm": "5268623103521e695fac8ef071ed31048665acadbbfec0d3c9398246e6d41c64",
+      "illustration": "flower"
+    },
+    "foot": {
+      "samples": 6656,
+      "sha256_pcm": "80a06e49deae1a43d1db74ce76a414f29f8ea53284d2493a8e79e0dda0685900",
+      "illustration": "foot"
+    },
+    "fork": {
+      "samples": 8445,
+      "sha256_pcm": "1666cdea94d46ef91efc07e727f03c8c2ac206cac282e981b9a95828a103c037",
+      "illustration": "fork"
+    },
+    "four": {
+      "samples": 7595,
+      "sha256_pcm": "60a378bf23a1509c8d1692584703fecdec1646c781b0c970229236d2594e5b0a",
+      "illustration": "four"
+    },
+    "fox": {
+      "samples": 10930,
+      "sha256_pcm": "6bbb2364e5433a967206fbbc6d2c49b3a83c713bd0697c35bb6bbb21e7fae639",
+      "illustration": "fox"
     },
     "frog": {
       "samples": 8884,
-      "sha256_pcm": "43ac7a451c4627cc4f86857c1a32788800167e30828cb8a3bd3f246ee59a198a"
+      "sha256_pcm": "43ac7a451c4627cc4f86857c1a32788800167e30828cb8a3bd3f246ee59a198a",
+      "illustration": "frog"
+    },
+    "gift": {
+      "samples": 7165,
+      "sha256_pcm": "ed6e10a127c1769f3b404c984f5536be4ed07cb0e8d8e9dbb0ca58927ef295b9",
+      "illustration": "gift"
+    },
+    "girl": {
+      "samples": 6229,
+      "sha256_pcm": "9bb02d211edd51f16edf1865f452eb4d464afc85888a93ddff75e6b72ad4c50b",
+      "illustration": "baby"
+    },
+    "grape": {
+      "samples": 7382,
+      "sha256_pcm": "0cd8c652124f048b343c1c390040eb9e97ed17ba30f720376690073c1496154a",
+      "illustration": "grape"
+    },
+    "grapes": {
+      "samples": 10525,
+      "sha256_pcm": "7cea51169094706fc782b4cb81670526062090e86fd3711ad6fdda343d409d5f",
+      "illustration": "grape"
     },
     "green": {
       "samples": 8135,
-      "sha256_pcm": "ab6251308b61de4fcdca74618a154c1e8029c53e372860b8e2cdd2c5b4bccf80"
+      "sha256_pcm": "ab6251308b61de4fcdca74618a154c1e8029c53e372860b8e2cdd2c5b4bccf80",
+      "illustration": "green"
+    },
+    "hand": {
+      "samples": 8234,
+      "sha256_pcm": "7f1461b5759f851356798ef9312b5bc9563c9d8ca0c60e0494121354e096cec2",
+      "illustration": "hand"
     },
     "happy": {
       "samples": 9546,
-      "sha256_pcm": "ce56046659a3fb7fda5e3efeca87aab0e7c52339266023a99e3e1432b0ca054e"
+      "sha256_pcm": "ce56046659a3fb7fda5e3efeca87aab0e7c52339266023a99e3e1432b0ca054e",
+      "illustration": "happy"
+    },
+    "hat": {
+      "samples": 6995,
+      "sha256_pcm": "6f373e797907b1140be3e161621c4a51db2df297b3dbfdf48cd31b58a1416d68",
+      "illustration": "hat"
+    },
+    "heart": {
+      "samples": 7591,
+      "sha256_pcm": "61fe0d2926b8b28ada7f9c4c5a51d396e3b6259fcf39fd7e11ae24bf1c1103b2",
+      "illustration": "love"
     },
     "hello": {
       "samples": 10489,
-      "sha256_pcm": "f5724d81688f30d01ecbb063ca793da41457fbe2e5836fa6079f5a57f658c513"
+      "sha256_pcm": "f5724d81688f30d01ecbb063ca793da41457fbe2e5836fa6079f5a57f658c513",
+      "illustration": "hello"
+    },
+    "hi": {
+      "samples": 7985,
+      "sha256_pcm": "58b23c79552a6680a6f1da7d07bc06d8f76241c963e7a9c52df1e35e35a7ccfa",
+      "illustration": "hello"
+    },
+    "home": {
+      "samples": 8069,
+      "sha256_pcm": "77d4226c06e92c8ba162785bf63968485df5574a0026c58e5bd21bf0906fb185",
+      "illustration": "house"
+    },
+    "horse": {
+      "samples": 9405,
+      "sha256_pcm": "8f1767aa6237b53d7af3487696b4d5da88f4febde03dac2aa147f3380da57ebe",
+      "illustration": "horse"
+    },
+    "house": {
+      "samples": 8818,
+      "sha256_pcm": "371860d8a43969e77623c6900bbd14c18c19703fda4bb36444fc84840d3b751d",
+      "illustration": "house"
+    },
+    "hug": {
+      "samples": 7282,
+      "sha256_pcm": "206aaa072fc5d5f67269b0d4448b9993b8762928f1cf4b538cba311b1f57224c",
+      "illustration": "love"
+    },
+    "icecream": {
+      "samples": 13051,
+      "sha256_pcm": "8d22e4164cb2e503e814751036f42870de8d4d274dbccc5712d52d21de13865c",
+      "illustration": "icecream"
+    },
+    "juice": {
+      "samples": 9182,
+      "sha256_pcm": "dd68bd16d84ba20010a417424f89ac647ef31582c9f060961fca9ff35f08df7f",
+      "illustration": "juice"
+    },
+    "jump": {
+      "samples": 8846,
+      "sha256_pcm": "be8bab1b3d51da5cece172a429facabe5fe40dcd2d4aebbeb3cbc92b4d4c3ce7",
+      "illustration": "jump"
+    },
+    "kite": {
+      "samples": 7323,
+      "sha256_pcm": "7e861f32a31eff4465be965f8cc892454817c9f4d095477439ee1ae6abc96bba",
+      "illustration": "kite"
+    },
+    "lamb": {
+      "samples": 7518,
+      "sha256_pcm": "0502889105fe261e1b26863a927be9bca7b12a4a22a96d50d4dc149f4766d3be",
+      "illustration": "sheep"
+    },
+    "leaf": {
+      "samples": 7961,
+      "sha256_pcm": "922f15986b64ac2df11288ca6b8ec33701e405d2eb4b1a728609c6e71eb308ae",
+      "illustration": "leaf"
+    },
+    "lemon": {
+      "samples": 8477,
+      "sha256_pcm": "a4f327c85262fe17c6f38e10895dccdf774d3edf6438e8577cf215f256bbb9de",
+      "illustration": "lemon"
+    },
+    "lion": {
+      "samples": 8654,
+      "sha256_pcm": "4480477287ab64967cabe73ed6d5173f72a8690803e319bd046d8e3bfc125a95",
+      "illustration": "lion"
     },
     "love": {
       "samples": 6981,
-      "sha256_pcm": "65a7d08e2fefae8f21e05f57d54cdf1e9ee8781cf25fc04f60e74f219c0ea127"
+      "sha256_pcm": "65a7d08e2fefae8f21e05f57d54cdf1e9ee8781cf25fc04f60e74f219c0ea127",
+      "illustration": "love"
     },
     "milk": {
       "samples": 6826,
-      "sha256_pcm": "b57407fcb0ef17e46d7119f273181cd1747df58be6435df49d658da4687792c7"
+      "sha256_pcm": "b57407fcb0ef17e46d7119f273181cd1747df58be6435df49d658da4687792c7",
+      "illustration": "milk"
     },
     "mom": {
       "samples": 8038,
-      "sha256_pcm": "ed1ba6bcc9594313611a795cff82fbbd696408bd54ddc9eceaf81b398230c7cb"
+      "sha256_pcm": "ed1ba6bcc9594313611a795cff82fbbd696408bd54ddc9eceaf81b398230c7cb",
+      "illustration": "mom"
+    },
+    "mommy": {
+      "samples": 8646,
+      "sha256_pcm": "a752e3e40425cb123f0fbaffa094b6b45a2d877947febdcf582f1e6f05eae299",
+      "illustration": "mom"
+    },
+    "monkey": {
+      "samples": 9965,
+      "sha256_pcm": "82f90402d896913fe6c4ce23681912a92cb693aa0741477f45b50876b46e7bb9",
+      "illustration": "monkey"
     },
     "moon": {
       "samples": 7446,
-      "sha256_pcm": "2c565488d8de9e5a475e5228d00ae6a94b36397ae6e6fb3d9fad2ea16e30cfb7"
+      "sha256_pcm": "2c565488d8de9e5a475e5228d00ae6a94b36397ae6e6fb3d9fad2ea16e30cfb7",
+      "illustration": "moon"
+    },
+    "mother": {
+      "samples": 7834,
+      "sha256_pcm": "4541c4a5048271739366837c6c9c3d633dc646f50bfaf2ba4aa6193231a0bbcb",
+      "illustration": "mom"
+    },
+    "mouse": {
+      "samples": 8847,
+      "sha256_pcm": "8c3d1359ac16363167738d8a5b49889521b82f5ac01d53be1e37460561af41c0",
+      "illustration": "mouse"
+    },
+    "mouth": {
+      "samples": 6987,
+      "sha256_pcm": "f56ff8fa645db3e92aed37db5ca5d9f039d41f5cc9e50df579707b173718fbe4",
+      "illustration": "mouth"
+    },
+    "nine": {
+      "samples": 9001,
+      "sha256_pcm": "724534629d446ed30191d41039bc471d9f6f2617d68ede6d61b46991e6c8538f",
+      "illustration": "nine"
+    },
+    "nose": {
+      "samples": 8873,
+      "sha256_pcm": "e5c99d0aaf14c35d61b943b04e5ff1108c34ba38262f2311a81a4def4d2f0a17",
+      "illustration": "nose"
+    },
+    "one": {
+      "samples": 8004,
+      "sha256_pcm": "a3d400e1100936e0454b01fb5af2386bc618a3577ab4b01881aa35dc75f46cab",
+      "illustration": "one"
+    },
+    "orange": {
+      "samples": 9656,
+      "sha256_pcm": "fd88478ad95222dd1184a89311a016c90436ab6094037cc9657cdf3273f67044",
+      "illustration": "orange"
+    },
+    "owl": {
+      "samples": 7971,
+      "sha256_pcm": "a06f8aad9b2786642352ea3b1e392abde543c4a095d8aeab81f416f16984656b",
+      "illustration": "owl"
+    },
+    "panda": {
+      "samples": 8454,
+      "sha256_pcm": "a760af3434ecb91f4f53ddfbb9f62631ed4338e88acbe118b0d4f5a80f24cf2b",
+      "illustration": "panda"
+    },
+    "pear": {
+      "samples": 6670,
+      "sha256_pcm": "f38a86c14b1263f1a6899b9c705d4206de1a7a8c62be1085204c2716f81e9b5d",
+      "illustration": "pear"
+    },
+    "penguin": {
+      "samples": 11242,
+      "sha256_pcm": "da1b257b9ee676e524fc3f21eacc0f22afa2be9577abb9f7d75effcf18a87cbe",
+      "illustration": "penguin"
     },
     "pig": {
       "samples": 5839,
-      "sha256_pcm": "9e5310f49033c7fa16297e6ec9b0eff6e76f02cc8b4197994023812d615f2e46"
+      "sha256_pcm": "9e5310f49033c7fa16297e6ec9b0eff6e76f02cc8b4197994023812d615f2e46",
+      "illustration": "pig"
+    },
+    "pink": {
+      "samples": 7400,
+      "sha256_pcm": "87846ccc285241ac97157fe6baa2eac0a6e408425f084c003b0408be76c96084",
+      "illustration": "pink"
+    },
+    "plane": {
+      "samples": 8200,
+      "sha256_pcm": "caa80ab066f447f2278342227272121fcd204ee0785545fc6e9accbb4f49bba8",
+      "illustration": "plane"
+    },
+    "pony": {
+      "samples": 8622,
+      "sha256_pcm": "4250e773e7c39f50b1bb5c990567c751ce7192f1f5abd368a72e3abbd7ee9118",
+      "illustration": "horse"
+    },
+    "purple": {
+      "samples": 8835,
+      "sha256_pcm": "c5c785d912db66f4a0f38c6c55842ab7448cc705509558fc15539102021dd2a9",
+      "illustration": "purple"
+    },
+    "rabbit": {
+      "samples": 8823,
+      "sha256_pcm": "723f5f9ee524b24bdbeabf9972d8ae053c1cbb04b0bd3a1f171bba4cc22157a3",
+      "illustration": "bunny"
     },
     "rain": {
       "samples": 7544,
-      "sha256_pcm": "95742372dcab1428d3202dda61fc4009cb1f73aaf3dd6ed22716c0505251f900"
+      "sha256_pcm": "95742372dcab1428d3202dda61fc4009cb1f73aaf3dd6ed22716c0505251f900",
+      "illustration": "rain"
+    },
+    "rainbow": {
+      "samples": 10360,
+      "sha256_pcm": "0e6b1121294fdbb27c4e4be9378995434e377d9c69b579be352883eb1f34e095",
+      "illustration": "rainbow"
     },
     "red": {
       "samples": 6192,
-      "sha256_pcm": "4bfb84e05cc6a8b03752ff8393afac21290c22c3a66264181b6fdf89d9e92c03"
+      "sha256_pcm": "4bfb84e05cc6a8b03752ff8393afac21290c22c3a66264181b6fdf89d9e92c03",
+      "illustration": "red"
+    },
+    "rice": {
+      "samples": 9504,
+      "sha256_pcm": "f62ff4cb0f8116c78977515adbe353fae149dcec66c3fa82b3163bab890b2027",
+      "illustration": "rice"
+    },
+    "rocket": {
+      "samples": 9452,
+      "sha256_pcm": "e384123c7c550dfe311a348aa56605c85945618f4562bf7ad36cbbcad3192abb",
+      "illustration": "rocket"
+    },
+    "seven": {
+      "samples": 9229,
+      "sha256_pcm": "0157a52795e5ce70acb7f6bf74cfc0ac8b4b111770bc5d968c92bbad007ecfc0",
+      "illustration": "seven"
+    },
+    "sheep": {
+      "samples": 8504,
+      "sha256_pcm": "caf9b4e8f2fde6a5b08c6646af64184444eddd8f6a9b2b042e02a7bffbe3887e",
+      "illustration": "sheep"
+    },
+    "shoe": {
+      "samples": 8586,
+      "sha256_pcm": "8c293582dfe5626ad744dd7bdded2641138179202c115581b94a4318a24282cf",
+      "illustration": "shoe"
+    },
+    "six": {
+      "samples": 10032,
+      "sha256_pcm": "1d2b8c176181745fdf81ddcc16f6de4274a2630d03311873db910012f7c0aa26",
+      "illustration": "six"
+    },
+    "sleep": {
+      "samples": 9169,
+      "sha256_pcm": "f452d8da654da44adb8898a18c9c7eb6f2cec7015755b6792eca47d9917259cc",
+      "illustration": "sleep"
+    },
+    "small": {
+      "samples": 9559,
+      "sha256_pcm": "08ec4b2d85f51c96419aeaa2006031b98d1ba3b1308990f056ba43e4b646d851",
+      "illustration": "small"
+    },
+    "smile": {
+      "samples": 11920,
+      "sha256_pcm": "1f342c8ba99ddb321ce3cd2c1282b052bbac42e3e47facdfc0143a179255cc05",
+      "illustration": "happy"
+    },
+    "snail": {
+      "samples": 10531,
+      "sha256_pcm": "76db1ffd626b93a753bf417957e77dbd2fc8551ab84cd5f721e15b964e5b5e36",
+      "illustration": "snail"
+    },
+    "snow": {
+      "samples": 10393,
+      "sha256_pcm": "48034bc97409ea63152b260076f6178f65a187d47330cfbb8670d5f7c84a7d79",
+      "illustration": "snow"
+    },
+    "sock": {
+      "samples": 8351,
+      "sha256_pcm": "03639d3479012a0c028a28794937a40bea8f7aca23ca46946637ff10e822e5bd",
+      "illustration": "sock"
+    },
+    "spoon": {
+      "samples": 10353,
+      "sha256_pcm": "477e7594efbf321934b970209bc1c891635b7e637cd5057f3a7a1d994ae28762",
+      "illustration": "spoon"
     },
     "star": {
       "samples": 9026,
-      "sha256_pcm": "4c6e7c3ae081f1d1b42a8c4a0cc1775447e4e12db62e2e9f134f4bedb0b20e3e"
+      "sha256_pcm": "4c6e7c3ae081f1d1b42a8c4a0cc1775447e4e12db62e2e9f134f4bedb0b20e3e",
+      "illustration": "star"
+    },
+    "strawberry": {
+      "samples": 13765,
+      "sha256_pcm": "149c70982afd710e5361eeaa09f863159cefa83f0db3df3d61e0fdcdf2b4f09d",
+      "illustration": "strawberry"
     },
     "sun": {
       "samples": 9659,
-      "sha256_pcm": "44cdc414034c5c04ad4f3999f7cd3debe2e0a16ade293015410fd89175c55053"
+      "sha256_pcm": "44cdc414034c5c04ad4f3999f7cd3debe2e0a16ade293015410fd89175c55053",
+      "illustration": "sun"
+    },
+    "teddy": {
+      "samples": 7829,
+      "sha256_pcm": "925cef920c37b41ad47a142ae8d8f21c9382d9c08dc5190a65b2b66425a1b755",
+      "illustration": "bear"
+    },
+    "ten": {
+      "samples": 8289,
+      "sha256_pcm": "36d4fe97a0b86654dd40a3752c6b6bb6edd9b5e41340e7a74bc9e7967879160a",
+      "illustration": "ten"
+    },
+    "three": {
+      "samples": 8186,
+      "sha256_pcm": "b7cd68f7e7de87cb7906759c409b3089960a068e9306d29c41cdc6fed082f052",
+      "illustration": "three"
+    },
+    "tiger": {
+      "samples": 9194,
+      "sha256_pcm": "50cd4bfe44125dc14fb25872a4285e46d897aac8b13614518977fe509631f6cb",
+      "illustration": "tiger"
+    },
+    "toast": {
+      "samples": 9365,
+      "sha256_pcm": "9ea9d3b456efa7ea7e45812866c7da13704fd6c8d03738e77a1c14bce2dfd92d",
+      "illustration": "bread"
+    },
+    "tomato": {
+      "samples": 11559,
+      "sha256_pcm": "7337197066459d1f3a3b8899ed48b0924c9ba27817ef33c19c7563f3e8d1c964",
+      "illustration": "tomato"
+    },
+    "train": {
+      "samples": 8606,
+      "sha256_pcm": "48e3411efda44b2bf670078c77c630843aa9a8ab943bbea01d08a201e02c94b3",
+      "illustration": "train"
     },
     "tree": {
       "samples": 7001,
-      "sha256_pcm": "83c31d7a69041a6395e65d5fe018f4747132d6e0759143b0b7e938de3b3dde99"
+      "sha256_pcm": "83c31d7a69041a6395e65d5fe018f4747132d6e0759143b0b7e938de3b3dde99",
+      "illustration": "tree"
+    },
+    "truck": {
+      "samples": 9093,
+      "sha256_pcm": "7cab83aa7d0d1a147cf0e73d84ef80d137aaa0a62c04484cb44c72f75cb4b641",
+      "illustration": "truck"
+    },
+    "turtle": {
+      "samples": 8346,
+      "sha256_pcm": "89bbca2d19488e8a31fdf1786c8ef96b8bcf6348ad0f866f352a055263d93e58",
+      "illustration": "turtle"
+    },
+    "two": {
+      "samples": 7001,
+      "sha256_pcm": "28176739637e18aad8ef3e8f6a3c5f4c5ecf4676de911dc3a731c48984dd6c8d",
+      "illustration": "two"
+    },
+    "water": {
+      "samples": 8109,
+      "sha256_pcm": "ff2bf44ff7685ea2e1f0c2918de8d3cec1eff4fda28781d6d25bc37465fbb85e",
+      "illustration": "water"
+    },
+    "watermelon": {
+      "samples": 13644,
+      "sha256_pcm": "9a71a076754d219c32898358169ccbcccbc9a227bbfc87b36bf3374ac0d7e4e3",
+      "illustration": "watermelon"
+    },
+    "whale": {
+      "samples": 8104,
+      "sha256_pcm": "f99b167feb31fcb29fe09744481c859dff89786bd121597021a73ab1d06fdc53",
+      "illustration": "whale"
+    },
+    "white": {
+      "samples": 7335,
+      "sha256_pcm": "314e03b7d3904389c41ca4357b7ae647434e2ed3b1707043b5ec2ee780f78bd6",
+      "illustration": "white"
     },
     "yellow": {
       "samples": 9081,
-      "sha256_pcm": "704481d5de923079f491e6cd79e0ed9eb65eb83f9929a313841224fb2a71dae3"
+      "sha256_pcm": "704481d5de923079f491e6cd79e0ed9eb65eb83f9929a313841224fb2a71dae3",
+      "illustration": "yellow"
     }
   }
 }

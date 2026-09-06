@@ -44,6 +44,8 @@ const WordAudio* findWord(const char* word) {
 
 void applySettings() {
   M5Cardputer.Speaker.setVolume(settings.volume);
+  M5Cardputer.Speaker.setChannelVolume(0, 255);
+  M5Cardputer.Speaker.setChannelVolume(1, kSpeechChannelVolume);
   M5Cardputer.Display.setBrightness(settings.brightness);
 }
 
@@ -55,15 +57,16 @@ bool saveSettings() {
 
 void status() {
   if (!Serial) return;
-  Serial.printf("STATUS board=%d idle_ms=%lu volume=%u brightness=%u words=%u speaker=%d canvas=%d prefs=%d heap=%u keys=%lu matches=%lu sounds=%lu frames=%lu physical_keys=%lu parent=%d input=%s\n",
+  Serial.printf("STATUS board=%d idle_ms=%lu volume=%u brightness=%u words=%u speaker=%d canvas=%d prefs=%d heap=%u keys=%lu matches=%lu sounds=%lu frames=%lu physical_keys=%lu parent=%d effects_playing=%d speech_playing=%d input=%s\n",
       int(M5.getBoard()), (unsigned long)settings.idleMs, settings.volume, settings.brightness,
       unsigned(kWordCount), soundReady, canvasReady, prefsReady, ESP.getFreeHeap(),
       (unsigned long)keyCount, (unsigned long)matchCount, (unsigned long)soundCount,
-      (unsigned long)frames, (unsigned long)physicalKeyCount, parentMode, input.text());
+      (unsigned long)frames, (unsigned long)physicalKeyCount, parentMode,
+      int(M5Cardputer.Speaker.isPlaying(0)), int(M5Cardputer.Speaker.isPlaying(1)), input.text());
 }
 
 void interruptSpeech() {
-  if (speech) { M5Cardputer.Speaker.stop(0); speech = false; logLine("SPEECH interrupted"); }
+  if (speech) { M5Cardputer.Speaker.stop(1); speech = false; logLine("SPEECH interrupted"); }
   visuals.clearWord();
 }
 
@@ -85,9 +88,10 @@ void finishRound(uint32_t now) {
   const WordAudio* match = input.isWordCandidate() ? findWord(input.text()) : nullptr;
   if (match) {
     ++matchCount;
-    visuals.showWord(match->word, now);
+    visuals.showWord(match->word, match->illustration, now);
     if (soundReady) {
-      speech = M5Cardputer.Speaker.playRaw(match->clip.data, match->clip.samples, 16000, false, 1, 0, true);
+      M5Cardputer.Speaker.stop(0);
+      speech = M5Cardputer.Speaker.playRaw(match->clip.data, match->clip.samples, 16000, false, 1, 1, true);
     }
     if (Serial) Serial.printf("ROUND match=%s speech=%d at_ms=%lu\n", match->word, speech, (unsigned long)now);
   } else logLine("ROUND no-match");
@@ -135,7 +139,12 @@ void parentKey(char key) {
   int direction = (key == 'a' || key == ',') ? -1 : (key == 'd' || key == '/') ? 1 : 0;
   if (direction) {
     if (selection == 0) draft.idleMs = constrain(int(draft.idleMs) + direction * 1000, int(kMinIdleMs), int(kMaxIdleMs));
-    if (selection == 1) draft.volume = constrain(int(draft.volume) + direction * 16, 0, int(kMaxVolume));
+    if (selection == 1) {
+      draft.volume = constrain(int(draft.volume) + direction * 16, 0, int(kMaxVolume));
+      M5Cardputer.Speaker.setVolume(draft.volume);
+      const auto& clip = kEffects[7];
+      if (soundReady) M5Cardputer.Speaker.playRaw(clip.data, clip.samples, 16000, false, 1, 0, true);
+    }
     if (selection == 2) {
       draft.brightness = constrain(int(draft.brightness) + direction * 25, 30, 255);
       M5Cardputer.Display.setBrightness(draft.brightness);
@@ -287,7 +296,7 @@ void setup() {
     M5Cardputer.Display.setTextColor(TFT_WHITE);
     M5Cardputer.Display.drawString("Display memory error", 10, 40);
   }
-  logLine("BOOT Little Wonders 1.2 gentle audio"); status();
+  logLine("BOOT Little Wonders 1.3 audible play + expanded words"); status();
 }
 
 void loop() {
@@ -296,7 +305,7 @@ void loop() {
   pollKeyboard(now);
   pollSerial(now);
   if (!previousKeys) finishRound(now);
-  if (speech && !M5Cardputer.Speaker.isPlaying(0)) { speech = false; logLine("SPEECH finished"); }
+  if (speech && !M5Cardputer.Speaker.isPlaying(1)) { speech = false; logLine("SPEECH finished"); }
   if (canvasReady && uint32_t(now - lastFrame) >= kFrameMs) {
     lastFrame = now;
     if (parentMode) drawSettings(); else visuals.draw(now);

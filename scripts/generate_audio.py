@@ -12,6 +12,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import time
 
 ROOT = Path(__file__).resolve().parents[1]
 RATE = 16000
@@ -21,7 +22,15 @@ SPEECH_TEMPO = 0.90
 
 
 def run(args):
-    subprocess.run(args, check=True)
+    # macOS speech occasionally hangs on a word. Bound the wait and retry;
+    # never let a regeneration silently stall halfway through the vocabulary.
+    for attempt in range(3):
+        try:
+            subprocess.run(args, check=True, timeout=15)
+            return
+        except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
+            if attempt == 2: raise
+            time.sleep(.3)
 
 
 def emit_pcm(path, symbol, samples):
@@ -35,9 +44,9 @@ def emit_pcm(path, symbol, samples):
 
 
 def effect(kind, note):
-    # A quiet C-major pentatonic palette, an octave below the original sounds.
-    # Keep enough midrange for the small speaker without piercing high chirps.
-    base = [261.63, 293.66, 329.63, 392.0, 440.0][note]
+    # Tiny speakers lose low fundamentals. Restore audible midrange rather
+    # than making bass quieter again; a smooth envelope avoids sharp clicks.
+    base = [523.25, 587.33, 659.25, 783.99, 880.0][note]
     length = int(RATE * [0.32, 0.36, 0.30, 0.42][kind])
     phase = 0.0
     out = []
@@ -47,31 +56,33 @@ def effect(kind, note):
         # Tiny drift gives a rounded water-drop character, without a whistle.
         freq = base * (1 + .07 * math.exp(-t * 16)) if kind == 0 else base
         phase += 2 * math.pi * freq / RATE
-        attack = [0.030, 0.045, 0.022, 0.055][kind]
+        attack = [0.014, 0.020, 0.012, 0.024][kind]
         envelope = math.sin(min(1, t / attack) * math.pi / 2) ** 2
-        envelope *= (1 - u) ** 2 * math.exp(-t * 2)
+        envelope *= math.cos(u * math.pi / 2) ** 2
         if kind == 0:    # rounded water drop, nearly pure sine
             value = math.sin(phase)
         elif kind == 1:  # warm felt-piano note
-            value = .94 * math.sin(phase) + .06 * math.sin(phase * 2) * math.exp(-t * 12)
+            value = .85 * math.sin(phase) + .15 * math.sin(phase * 2) * math.exp(-t * 12)
         elif kind == 2:  # muted wooden note, no metallic overtones
-            value = .96 * math.sin(phase) + .04 * math.sin(phase * 3) * math.exp(-t * 28)
+            value = .90 * math.sin(phase) + .10 * math.sin(phase * 3) * math.exp(-t * 28)
         else:           # soft lullaby fifth, slowly blooming
             bloom = math.sin(min(1, t / .16) * math.pi / 2) ** 2
             value = .85 * math.sin(phase) + .15 * bloom * math.sin(phase * 1.5)
-        out.append(round(10000 * envelope * value))
+        out.append(round(22000 * envelope * value))
     return out
 
 
 def main():
     words = (ROOT / 'assets/words.txt').read_text().split()
+    visuals = json.loads((ROOT / 'assets/word_visuals.json').read_text())
     assert words == sorted(set(words)) and all(w.isascii() and w.isalpha() for w in words)
+    assert set(words) == set(visuals), 'Every word needs an intentional illustration'
     out = ROOT / 'src/generated'
     out.mkdir(parents=True, exist_ok=True)
     header = ['#pragma once', '#include <cstddef>', '#include <cstdint>',
               'namespace toy {',
               'struct Clip { const int16_t* data; size_t samples; };',
-              'struct WordAudio { const char* word; Clip clip; };',
+              'struct WordAudio { const char* word; Clip clip; const char* illustration; };',
               'extern const WordAudio kWords[];', 'extern const size_t kWordCount;',
               'extern const Clip kEffects[20];', '}']
     (ROOT / 'include/audio_assets.h').write_text('\n'.join(header) + '\n')
@@ -79,7 +90,7 @@ def main():
               '#include "audio_assets.h"', 'namespace toy {']
     manifest = {'voice': 'Samantha', 'rate_wpm': SPEECH_RATE,
                 'speech_gain': SPEECH_GAIN, 'speech_tempo': SPEECH_TEMPO,
-                'sound_palette': 'gentle-v1',
+                'sound_palette': 'gentle-audible-v2',
                 'sample_rate': RATE, 'words': {}}
     counts = {}
     with tempfile.TemporaryDirectory(prefix='cardputer-audio-') as temp:
@@ -97,7 +108,7 @@ def main():
                 raise RuntimeError(f'{word}: empty or silent speech; run with macOS speech service access')
             counts[word] = emit_pcm(out / f'{word}.inc', f'audio_{word}', samples)
             source.append(f'#include "{word}.inc"')
-            manifest['words'][word] = {'samples': len(samples), 'sha256_pcm': hashlib.sha256(data).hexdigest()}
+            manifest['words'][word] = {'samples': len(samples), 'sha256_pcm': hashlib.sha256(data).hexdigest(), 'illustration': visuals[word]}
             print(f'{word}: {len(samples) / RATE:.2f}s', flush=True)
     effects = []
     for kind in range(4):
@@ -107,7 +118,7 @@ def main():
             effects.append(count)
             source.append(f'#include "effect_{index}.inc"')
     source.append('const WordAudio kWords[] = {')
-    source.extend(f'{{"{w}", {{audio_{w}, {counts[w]}}}}},' for w in words)
+    source.extend(f'{{"{w}", {{audio_{w}, {counts[w]}}}, "{visuals[w]}"}},' for w in words)
     source += ['};', 'const size_t kWordCount = sizeof(kWords) / sizeof(kWords[0]);', 'const Clip kEffects[20] = {']
     source.extend(f'{{effect_{i}, {n}}},' for i, n in enumerate(effects))
     source += ['};', '}']

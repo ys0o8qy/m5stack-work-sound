@@ -65,21 +65,35 @@ void Visuals::setInput(const char* text, uint32_t now, bool deleted) {
 void Visuals::drawKey(uint32_t now) {
   const auto style = styleForKey(activeKey_);
   float age = uint32_t(now - burstBorn_) / 1000.f;
-  float pop = age < .28f ? .7f + .3f * sinf(fminf(age / .28f, 1.f) * 1.5708f) : 1.f;
-  float bump = age < .6f ? -7 * sinf(age * 5.236f) : sinf(age * 2.5f) * 1.5f;
-  int x = 120, y = 60 + bump, r = 32 * pop;
+  float pop = 1.f - .35f * expf(-age * 7) * cosf(age * 12);
+  float bump = sinf(age * 2.5f) * 2;
+  if (style.animation == 0) bump = -8 * (1 - expf(-age * 3)) + sinf(age * 3) * 3;
+  if (style.animation == 1) bump = -22 * fabsf(sinf(age * 7)) * expf(-age * 1.3f);
+  int x = 120, y = 62 + bump, r = 29 * pop;
   uint16_t color = colors[style.color];
-  c_.fillEllipse(x, 99, 22, 3, 0x1949);
-  if (style.animation == 3) star(x, y, r + 9, color);
+  c_.fillEllipse(x, 99, 23 + bump / 3, 3, 0x1949);
+  if (style.animation == 3) {
+    star(x, y, r + 9, color, .16f * sinf(age * 3));
+    for (int i = 0; i < 3; ++i) {
+      float a = age * 1.7f + i * 2.0944f;
+      star(x + cosf(a) * 49, y + sinf(a) * 27, 4, color, a);
+    }
+  }
   else if (style.animation == 2) {
     for (int i = 0; i < 5; ++i) {
-      float a = i * 1.256637f - 1.5708f;
-      c_.fillCircle(x + cosf(a) * r * .69f, y + sinf(a) * r * .69f, r * .52f, color);
+      float a = i * 1.256637f - 1.5708f + .20f * sinf(age * 2);
+      float bloom = .35f + .4f * (1 - expf(-age * 4));
+      c_.fillCircle(x + cosf(a) * r * bloom, y + sinf(a) * r * bloom, r * .52f, color);
     }
     c_.fillCircle(x, y, r * .7f, color);
   } else {
-    c_.fillCircle(x, y, r, color);
-    if (style.animation == 0) c_.drawCircle(x, y, r + 4, color);
+    float squash = style.animation == 1 ? .12f * expf(-age * 1.3f) * cosf(age * 14) : 0;
+    c_.fillEllipse(x, y, r * (1 + squash), r * (1 - squash), color);
+    if (style.animation == 0) {
+      c_.drawCircle(x, y, r + 4, color);
+      c_.fillEllipse(x - r / 2, y - r / 2, 3, 6, WHITE);
+      if (age < .75f) c_.drawEllipse(x, 98, 28 + age * 35, 3 + age * 4, color);
+    }
   }
   c_.setTextColor(INK); c_.setTextDatum(middle_center); c_.setTextFont(4);
   if (activeKey_ >= 33 && activeKey_ <= 126) {
@@ -132,12 +146,13 @@ void Visuals::drawInput(uint32_t now) {
   }
 }
 
-void Visuals::showWord(const char* word, uint32_t now) {
-  word_ = word; wordBorn_ = now;
+void Visuals::showWord(const char* word, const char* icon, uint32_t now) {
+  word_ = word; wordIcon_ = icon; wordBorn_ = now;
   for (auto& p : particles_) p.alive = false;
 }
 
 void Visuals::illustration(const char* w, int x, int y) {
+  if (extendedIllustration(w, x, y)) return;
   if (is(w, "cat") || is(w, "dog") || is(w, "bear") || is(w, "bunny") || is(w, "cow") || is(w, "pig")) {
     uint16_t coat = is(w, "pig") ? PINK : is(w, "cow") ? WHITE : is(w, "bear") ? PEACH : GOLD;
     if (is(w, "cat")) {
@@ -258,8 +273,7 @@ void Visuals::illustration(const char* w, int x, int y) {
     c_.fillCircle(x, y, 30, color);
     if (is(w, "ball")) { c_.fillEllipse(x, y, 12, 30, BLUE); c_.drawFastHLine(x - 29, y, 58, WHITE); }
     c_.fillEllipse(x - 14, y - 15, 4, 7, WHITE);
-  } else {
-    // Friendly faces for baby, mom, dad, hello, happy.
+  } else if (is(w, "baby") || is(w, "mom") || is(w, "dad") || is(w, "hello") || is(w, "happy")) {
     c_.fillCircle(x, y, 29, PEACH);
     if (is(w, "dad")) c_.fillRoundRect(x - 29, y - 33, 58, 13, 5, BLUE);
     if (is(w, "mom")) { c_.fillCircle(x - 24, y - 21, 14, LILAC); c_.fillCircle(x + 24, y - 21, 14, LILAC); }
@@ -285,8 +299,10 @@ void Visuals::draw(uint32_t now) {
   const bool showingWord = word_ && now - wordBorn_ < 4500;
   if (showingWord) {
     float t = (now - wordBorn_) / 1000.f;
-    int bob = sinf(t * 3) * 2;
-    illustration(word_, 120, 61 + bob);
+    int bob = sinf(t * 3) * 3 + 6 * expf(-t * 8);
+    int sway = sinf(t * 2) * 4;
+    c_.fillEllipse(120, 98, 29, 3, 0x1949);
+    illustration(wordIcon_, 120 + sway, 61 + bob);
     star(54, 52, 5, MINT, t * .3f); star(189, 72, 7, LILAC, -t * .3f);
     c_.setTextDatum(top_center); c_.setTextColor(WHITE, BG); c_.setTextFont(4);
     c_.drawString(word_, 120, 104);

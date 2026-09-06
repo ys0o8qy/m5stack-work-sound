@@ -6,7 +6,8 @@ namespace toy {
 constexpr uint32_t kDefaultIdleMs = 3000;
 constexpr uint32_t kMinIdleMs = 1000;
 constexpr uint32_t kMaxIdleMs = 15000;
-constexpr uint8_t kDefaultVolume = 64;  // M5 volume scale: 0..255; gentle default
+constexpr uint8_t kDefaultVolume = 80;  // Audible midrange effects; speech has separate attenuation.
+constexpr uint8_t kSpeechChannelVolume = 204;
 constexpr uint8_t kMaxVolume = 160;
 constexpr uint8_t kDefaultBrightness = 130;
 constexpr uint32_t kParentHoldMs = 2000;

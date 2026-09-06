@@ -6,7 +6,7 @@
 ## 产品方向
 
 - Little Wonders 是给约 **2 岁孩子**玩的声音与动画键盘玩具。即时反馈和自由探索是核心，英文朗读是偶尔触发的小惊喜。
-- 声音需要 **宁静、柔和、适合小孩**：低一些的音高、轻音量、平滑起音与消退；避免尖锐高音、夸张弹簧声、密集叠音。
+- 声音需要 **宁静、柔和、适合小孩**：在小扬声器上清晰可听的中频、适中音量、平滑起音与消退；避免尖锐高音、夸张弹簧声、密集叠音。
 - 中央表现刚按下的字母/特殊键；底部显示本轮输入。同一个键固定对应颜色、动画类型和音色，粒子运动可以有小变化。
 - 松开全部按键后默认等待 **3 秒**（可配置），仅在整轮输入精确匹配内置英文词库时朗读一次。不要改成 5 秒或 1.2 秒，也不要逐键朗读。
 - 输入错误或乱按不惩罚、不报错；无关输入不强行朗读。新按键应立即打断朗读并恢复玩耍。
@@ -21,19 +21,6 @@
 - 保留 `artifacts/backups/original-flash.bin` 及校验和，不覆盖首次原固件备份。
 - 用户确认产品方向或规则发生变化时，同步更新需求说明与相关使用文档，避免保留互相冲突的“当前要求”。
 
-<!-- codebase-memory-mcp:start -->
-## Codebase Knowledge Graph (codebase-memory-mcp)
 
-ALWAYS prefer MCP graph tools over grep/glob/file-search for code discovery.
-Run `index_repository` first if this project is not indexed.
-
-Priority order:
-1. `search_graph` — find functions, classes, routes, variables by pattern.
-2. `trace_path` — trace callers and callees.
-3. `get_code_snippet` — read a specific symbol after finding its qualified name.
-4. `query_graph` — complex graph queries.
-5. `get_architecture` — high-level project overview.
-
-Use `search_code` for graph-augmented text search. Fall back to grep/glob for string
-literals, error messages, config values, non-code files, or insufficient graph results.
-<!-- codebase-memory-mcp:end -->
+- 用户已要求移除代码知识图谱工具及其 skill；后续使用普通文件和文本搜索，不再注册或调用已移除的工具。
+- 保留已有输入行为回归测试；声音、词库、动画变更要增加对应检查，不依赖易碎的逐像素或逐采样固定快照。
