@@ -7,6 +7,8 @@
 #include "key_feedback.h"
 #include "toy_config.h"
 #include "toy_visuals.h"
+#include "idle_dimmer.h"
+#include "parent_settings.h"
 
 namespace {
 using namespace toy;
@@ -14,15 +16,16 @@ M5Canvas canvas(&M5Cardputer.Display);
 Visuals visuals(canvas);
 InputSession input;
 Preferences prefs;
-struct Settings {
-  uint32_t idleMs = kDefaultIdleMs;
-  uint8_t volume = kDefaultVolume;
-  uint8_t brightness = kDefaultBrightness;
-} settings, draft;
+Settings settings, draft;
+IdleDimmer dimmer;
+uint8_t appliedBrightness = kDefaultBrightness;
+bool bookMode = false;
+size_t bookIndex = 0;
 uint64_t previousKeys = 0;
 uint32_t lastFrame = 0, lastSound = 0, parentDown = 0, lastStatus = 0;
 bool parentMode = false, parentLatch = false, parentTiming = false;
 bool speech = false, soundReady = false, prefsReady = false, canvasReady = false;
+bool diagnosticMuted = false;  // RAM only: automated checks never alter saved volume.
 unsigned selection = 0;
 uint32_t keyCount = 0, physicalKeyCount = 0, matchCount = 0, soundCount = 0, frames = 0;
 char command[96] = {};
@@ -43,26 +46,28 @@ const WordAudio* findWord(const char* word) {
 }
 
 void applySettings() {
-  M5Cardputer.Speaker.setVolume(settings.volume);
+  M5Cardputer.Speaker.setVolume(diagnosticMuted ? 0 : settings.volume);
   M5Cardputer.Speaker.setChannelVolume(0, 255);
   M5Cardputer.Speaker.setChannelVolume(1, kSpeechChannelVolume);
   M5Cardputer.Display.setBrightness(settings.brightness);
+  appliedBrightness = settings.brightness;
 }
 
 bool saveSettings() {
   if (!prefsReady) return false;
   // One blob prevents partial settings updates after a power loss.
-  return prefs.putBytes("settings", &settings, sizeof(settings)) == sizeof(settings);
+  return prefs.putBytes("settings_v2", &settings, sizeof(settings)) == sizeof(settings);
 }
 
 void status() {
   if (!Serial) return;
-  Serial.printf("STATUS board=%d idle_ms=%lu volume=%u brightness=%u words=%u speaker=%d canvas=%d prefs=%d heap=%u keys=%lu matches=%lu sounds=%lu frames=%lu physical_keys=%lu parent=%d effects_playing=%d speech_playing=%d input=%s\n",
+  Serial.printf("STATUS board=%d idle_ms=%lu volume=%u brightness=%u words=%u speaker=%d canvas=%d prefs=%d heap=%u keys=%lu matches=%lu sounds=%lu frames=%lu physical_keys=%lu parent=%d effects_playing=%d speech_playing=%d muted=%d book=%d book_index=%u dim_ms=%lu display_brightness=%u input=%s\n",
       int(M5.getBoard()), (unsigned long)settings.idleMs, settings.volume, settings.brightness,
       unsigned(kWordCount), soundReady, canvasReady, prefsReady, ESP.getFreeHeap(),
       (unsigned long)keyCount, (unsigned long)matchCount, (unsigned long)soundCount,
       (unsigned long)frames, (unsigned long)physicalKeyCount, parentMode,
-      int(M5Cardputer.Speaker.isPlaying(0)), int(M5Cardputer.Speaker.isPlaying(1)), input.text());
+      int(M5Cardputer.Speaker.isPlaying(0)), int(M5Cardputer.Speaker.isPlaying(1)), diagnosticMuted,
+      bookMode, unsigned(bookIndex), (unsigned long)settings.dimMs, appliedBrightness, input.text());
 }
 
 void interruptSpeech() {
@@ -100,6 +105,7 @@ void finishRound(uint32_t now) {
 }
 
 void textKey(char value, uint32_t now, uint16_t identity = 0) {
+  dimmer.touch(now);
   // Expired rounds cannot be joined by the first key of a new round.
   finishRound(now);
   if (!identity) identity = value ? uint8_t(value) : kKeyFn;
@@ -115,6 +121,7 @@ void textKey(char value, uint32_t now, uint16_t identity = 0) {
 }
 
 void openSettings() {
+  dimmer.touch(millis());
   parentMode = true; draft = settings; selection = 0;
   input.clear(); visuals.clearInput(); interruptSpeech(); M5Cardputer.Speaker.stop(0);
   logLine("SETTINGS opened");
@@ -130,28 +137,68 @@ void closeSettings(bool save) {
       return;
     }
   }
-  applySettings(); parentMode = false; input.clear(); visuals.clearInput();
+  interruptSpeech(); M5Cardputer.Speaker.stop(0);
+  applySettings(); parentMode = false; bookMode = false; input.clear(); visuals.clearInput();
   logLine(save ? "SETTINGS saved" : "SETTINGS cancelled");
 }
 
+void showBookWord() {
+  interruptSpeech();
+  visuals.showWord(kWords[bookIndex].word, kWords[bookIndex].illustration, millis());
+  if (Serial) Serial.printf("BOOK word=%s index=%u\n", kWords[bookIndex].word, unsigned(bookIndex));
+}
+
+void openBook() {
+  if (!parentMode) openSettings();
+  bookMode = true; dimmer.touch(millis());
+  showBookWord();
+}
+
+void bookKey(char key) {
+  dimmer.touch(millis());
+  int direction = key == 'a' || key == ',' ? -1 : key == 'd' || key == '/' ? 1 :
+                  key == 'w' || key == ';' ? -10 : key == 's' || key == '.' ? 10 : 0;
+  if (direction) {
+    bookIndex = (int(bookIndex) + direction + int(kWordCount)) % kWordCount;
+    showBookWord();
+  }
+  if (key == '\r') {
+    interruptSpeech();
+    const auto& word = kWords[bookIndex];
+    visuals.showWord(word.word, word.illustration, millis());
+    M5Cardputer.Speaker.stop(0);
+    if (soundReady) speech = M5Cardputer.Speaker.playRaw(word.clip.data, word.clip.samples, 16000, false, 1, 1, true);
+    if (Serial) Serial.printf("BOOK listen=%s speech=%d\n", word.word, speech);
+  }
+  if (key == '`') { interruptSpeech(); bookMode = false; logLine("BOOK closed"); }
+}
+
 void parentKey(char key) {
-  if (key == 'w' || key == ';') selection = (selection + 2) % 3;
-  if (key == 's' || key == '.') selection = (selection + 1) % 3;
+  dimmer.touch(millis());
+  if (bookMode) { bookKey(key); return; }
+  if (key == 'w' || key == ';') selection = (selection + 4) % 5;
+  if (key == 's' || key == '.') selection = (selection + 1) % 5;
   int direction = (key == 'a' || key == ',') ? -1 : (key == 'd' || key == '/') ? 1 : 0;
   if (direction) {
     if (selection == 0) draft.idleMs = constrain(int(draft.idleMs) + direction * 1000, int(kMinIdleMs), int(kMaxIdleMs));
     if (selection == 1) {
       draft.volume = constrain(int(draft.volume) + direction * 16, 0, int(kMaxVolume));
-      M5Cardputer.Speaker.setVolume(draft.volume);
+      M5Cardputer.Speaker.setVolume(diagnosticMuted ? 0 : draft.volume);
       const auto& clip = kEffects[7];
       if (soundReady) M5Cardputer.Speaker.playRaw(clip.data, clip.samples, 16000, false, 1, 0, true);
     }
     if (selection == 2) {
       draft.brightness = constrain(int(draft.brightness) + direction * 25, 30, 255);
       M5Cardputer.Display.setBrightness(draft.brightness);
+      appliedBrightness = draft.brightness;
+    }
+    if (selection == 4) {
+      const uint32_t choices[] = {0, 30000, 60000, 120000};
+      unsigned i = 0; while (i < 3 && choices[i] != draft.dimMs) ++i;
+      draft.dimMs = choices[(int(i) + direction + 4) % 4];
     }
   }
-  if (key == '\r') closeSettings(true);
+  if (key == '\r') { if (selection == 3) openBook(); else closeSettings(true); }
   if (key == '`') closeSettings(false);
 }
 
@@ -160,17 +207,23 @@ void drawSettings() {
   canvas.setTextFont(2); canvas.setTextSize(1); canvas.setTextColor(0xffbd);
   canvas.drawString("Grown-up settings", 10, 6);
   char value[36];
-  for (int row = 0; row < 3; ++row) {
-    int y = 29 + row * 23;
+  unsigned first = selection > 2 ? selection - 2 : 0;
+  for (unsigned row = first; row < first + 3; ++row) {
+    int y = 29 + (row - first) * 23;
     if (row == int(selection)) canvas.fillRoundRect(6, y - 2, 228, 23, 5, 0x226d);
     if (row == 0) snprintf(value, sizeof(value), "Wait before reading     %lu s", (unsigned long)(draft.idleMs / 1000));
     if (row == 1) snprintf(value, sizeof(value), "Volume                       %u%%", unsigned(draft.volume) * 100 / 255);
     if (row == 2) snprintf(value, sizeof(value), "Brightness                   %u%%", unsigned(draft.brightness) * 100 / 255);
+    if (row == 3) snprintf(value, sizeof(value), "Picture book           %u words", unsigned(kWordCount));
+    if (row == 4) {
+      if (draft.dimMs) snprintf(value, sizeof(value), "Dim screen after        %lu s", (unsigned long)(draft.dimMs / 1000));
+      else snprintf(value, sizeof(value), "Dim screen                 Off");
+    }
     canvas.drawString(value, 12, y);
   }
   canvas.setTextFont(1); canvas.setTextColor(0x9cf5);
   canvas.drawString("W/S select   A/D change", 12, 107);
-  canvas.drawString("Enter save   ` cancel", 12, 121);
+  canvas.drawString(selection == 3 ? "Enter open   ` cancel" : "Enter save   ` cancel", 12, 121);
 }
 
 void pollKeyboard(uint32_t now) {
@@ -201,9 +254,10 @@ void pollKeyboard(uint32_t now) {
     else textKey(value, now, identity);
   }
   previousKeys = current;
-  if (current) input.held(now);
+  if (current) { input.held(now); dimmer.touch(now); }
 
   if (M5Cardputer.BtnA.isPressed()) {
+    dimmer.touch(now);
     if (!parentTiming) { parentTiming = true; parentDown = now; }
     if (!parentLatch && uint32_t(now - parentDown) >= kParentHoldMs) {
       parentLatch = true;
@@ -212,8 +266,22 @@ void pollKeyboard(uint32_t now) {
   } else { parentTiming = false; parentLatch = false; }
 }
 
+bool writeFrameRow(const uint8_t* row, size_t size) {
+  const uint32_t start = millis();
+  size_t sent = 0;
+  while (sent < size) {
+    if (!Serial || uint32_t(millis() - start) >= 5000) return false;
+    // USB can accept only part of a row when the host is busy. Retain and
+    // retry the unwritten tail instead of silently exporting a truncated image.
+    sent += Serial.write(row + sent, size - sent);
+    if (sent < size) delay(1);
+  }
+  return true;
+}
+
 void sendFrame() {
   if (!canvasReady) { logLine("ERROR canvas unavailable"); return; }
+  Serial.setTxTimeoutMs(1000); // A busy host must not trigger HWCDC's 100 ms FIFO discard.
   // Diagnostic export of the same RGB frame that is pushed to the LCD.
   Serial.printf("FRAME %u\n", 240u * 135u * 3u);
   uint8_t row[240 * 3];
@@ -222,9 +290,10 @@ void sendFrame() {
       auto rgb = canvas.readPixelRGB(x, y);
       row[x * 3] = rgb.r; row[x * 3 + 1] = rgb.g; row[x * 3 + 2] = rgb.b;
     }
-    Serial.write(row, sizeof(row));
+    if (!writeFrameRow(row, sizeof(row))) { Serial.setTxTimeoutMs(100); logLine("ERROR frame transfer stopped"); return; }
   }
   Serial.println("\nFRAME_END");
+  Serial.setTxTimeoutMs(100);
 }
 
 bool parseNumber(const char* value, long& result) {
@@ -235,8 +304,15 @@ bool parseNumber(const char* value, long& result) {
 
 void handleCommand(uint32_t now) {
   if (!strcmp(command, "status")) status();
+  else if (!strcmp(command, "book")) openBook();
+  else if (!strcmp(command, "listen") && bookMode) bookKey('\r');
+  else if (!strcmp(command, "enter")) { if (parentMode) parentKey('\r'); else textKey('\r', now); }
+  else if (!strcmp(command, "mute on") || !strcmp(command, "mute off")) {
+    diagnosticMuted = !strcmp(command, "mute on");
+    applySettings(); logLine(diagnosticMuted ? "OK muted" : "OK unmuted");
+  }
   else if (!strcmp(command, "frame")) sendFrame();
-  else if (!strcmp(command, "clear")) { input.clear(); visuals.clearInput(); interruptSpeech(); M5Cardputer.Speaker.stop(0); logLine("OK clear"); }
+  else if (!strcmp(command, "clear")) { dimmer.touch(now); input.clear(); visuals.clearInput(); interruptSpeech(); M5Cardputer.Speaker.stop(0); logLine("OK clear"); }
   else if (!strcmp(command, "backspace")) { if (!parentMode) textKey('\b', now); }
   else if (!strcmp(command, "settings")) openSettings();
   else if (!strcmp(command, "save")) { if (parentMode) closeSettings(true); }
@@ -284,11 +360,18 @@ void setup() {
   canvas.setColorDepth(16);
   canvasReady = canvas.createSprite(240, 135) != nullptr;
   prefsReady = prefs.begin("little-wonders", false);
-  if (prefsReady && prefs.getBytesLength("settings") == sizeof(settings))
-    prefs.getBytes("settings", &settings, sizeof(settings));
+  if (prefsReady && prefs.getBytesLength("settings_v2") == sizeof(settings)) {
+    prefs.getBytes("settings_v2", &settings, sizeof(settings));
+  } else if (prefsReady && prefs.getBytesLength("settings") == sizeof(LegacySettings)) {
+    LegacySettings old;
+    prefs.getBytes("settings", &old, sizeof(old));
+    settings = migrateSettings(old);
+  }
   settings.idleMs = constrain(settings.idleMs, kMinIdleMs, kMaxIdleMs);
   settings.volume = min(settings.volume, kMaxVolume);
   settings.brightness = max(settings.brightness, uint8_t(30));
+  if (!validDimDelay(settings.dimMs)) settings.dimMs = 60000;
+  dimmer.touch(millis());
   applySettings();
   soundReady = M5Cardputer.Speaker.begin();
   randomSeed(esp_random());
@@ -297,7 +380,7 @@ void setup() {
     M5Cardputer.Display.setTextColor(TFT_WHITE);
     M5Cardputer.Display.drawString("Display memory error", 10, 40);
   }
-  logLine("BOOT Little Wonders 1.3 audible play + expanded words"); status();
+  logLine("BOOT Little Wonders 1.4 picture book + living scenes"); status();
 }
 
 void loop() {
@@ -305,11 +388,17 @@ void loop() {
   uint32_t now = millis();
   pollKeyboard(now);
   pollSerial(now);
+  now = millis();  // Parent actions may record activity while processing USB.
+  uint8_t targetBrightness = dimmer.brightness(now, settings.dimMs, parentMode ? draft.brightness : settings.brightness);
+  if (targetBrightness != appliedBrightness) {
+    M5Cardputer.Display.setBrightness(targetBrightness); appliedBrightness = targetBrightness;
+  }
   if (!previousKeys) finishRound(now);
   if (speech && !M5Cardputer.Speaker.isPlaying(1)) { speech = false; logLine("SPEECH finished"); }
   if (canvasReady && uint32_t(now - lastFrame) >= kFrameMs) {
     lastFrame = now;
-    if (parentMode) drawSettings(); else visuals.draw(now);
+    if (bookMode) visuals.draw(now, true, bookIndex, kWordCount);
+    else if (parentMode) drawSettings(); else visuals.draw(now);
     canvas.pushSprite(0, 0); ++frames;
   }
   if (uint32_t(now - lastStatus) >= 30000) { lastStatus = now; status(); }

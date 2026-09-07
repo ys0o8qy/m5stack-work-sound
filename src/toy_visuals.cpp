@@ -187,11 +187,14 @@ void Visuals::illustration(const char* w, int x, int y) {
     c_.fillEllipse(x + 1, y, 29, 20, BLUE);
     c_.fillTriangle(x - 5, y - 16, x + 9, y - 29, x + 17, y - 12, BLUE);
     c_.fillCircle(x + 16, y - 5, 5, WHITE); c_.fillCircle(x + 18, y - 5, 2, INK);
-    c_.drawCircle(x + 40, y - 15, 4, MINT); c_.drawCircle(x + 47, y - 28, 3, MINT);
+    for (int i = 0; i < 3; ++i) {
+      float rise = fmodf(wordTime_ * 13 + i * 13, 39.f);
+      c_.drawCircle(x + 40 + i % 2 * 7, y + 5 - rise, 2 + i % 2, MINT);
+    }
   } else if (is(w, "bird") || is(w, "duck")) {
     c_.fillEllipse(x - 5, y + 6, 27, 20, is(w, "duck") ? GOLD : BLUE);
     c_.fillCircle(x + 15, y - 12, 18, is(w, "duck") ? GOLD : BLUE);
-    c_.fillEllipse(x - 9, y + 4, 16, 10, PEACH);
+    c_.fillEllipse(x - 9, y + 4 - sinf(wordTime_ * 5) * 4, 16, 9 + sinf(wordTime_ * 5) * 4, PEACH);
     c_.fillTriangle(x + 28, y - 14, x + 43, y - 8, x + 27, y - 3, PEACH);
     c_.fillCircle(x + 19, y - 16, 3, INK);
     c_.drawFastHLine(x - 9, y + 29, 14, GOLD); c_.drawFastHLine(x + 8, y + 29, 14, GOLD);
@@ -256,7 +259,7 @@ void Visuals::illustration(const char* w, int x, int y) {
     c_.fillCircle(x, y, 23, GOLD); face(x, y - 3, 8);
   } else if (is(w, "flower")) {
     c_.fillRect(x - 2, y, 4, 34, MINT); c_.fillEllipse(x + 10, y + 20, 10, 5, MINT);
-    for (int i = 0; i < 5; ++i) { float a = i * 1.256637f; c_.fillCircle(x + cosf(a) * 17, y - 9 + sinf(a) * 17, 13, PINK); }
+    for (int i = 0; i < 5; ++i) { float a = i * 1.256637f + .18f * sinf(wordTime_ * 2); c_.fillCircle(x + cosf(a) * 17, y - 9 + sinf(a) * 17, 13, PINK); }
     c_.fillCircle(x, y - 9, 11, GOLD);
   } else if (is(w, "tree")) {
     c_.fillRoundRect(x - 5, y - 2, 10, 34, 3, PEACH);
@@ -264,10 +267,14 @@ void Visuals::illustration(const char* w, int x, int y) {
   } else if (is(w, "rain")) {
     c_.fillRoundRect(x - 34, y - 20, 68, 25, 12, WHITE);
     c_.fillCircle(x - 10, y - 22, 18, WHITE); c_.fillCircle(x + 14, y - 22, 14, WHITE);
-    for (int i = 0; i < 4; ++i) c_.drawWideLine(x - 23 + i * 16, y + 14, x - 29 + i * 16, y + 27, 4, BLUE);
+    for (int i = 0; i < 4; ++i) {
+      float fall = fmodf(wordTime_ * 24 + i * 9, 23.f);
+      c_.drawWideLine(x - 23 + i * 16, y + 8 + fall, x - 27 + i * 16, y + 16 + fall, 3, BLUE);
+    }
   } else if (is(w, "love")) {
-    c_.fillCircle(x - 14, y - 10, 19, PINK); c_.fillCircle(x + 14, y - 10, 19, PINK);
-    c_.fillTriangle(x - 31, y, x + 31, y, x, y + 32, PINK);
+    int pulse = 2 * sinf(wordTime_ * 3);
+    c_.fillCircle(x - 14, y - 10, 19 + pulse, PINK); c_.fillCircle(x + 14, y - 10, 19 + pulse, PINK);
+    c_.fillTriangle(x - 31 - pulse, y, x + 31 + pulse, y, x, y + 32 + pulse, PINK);
   } else if (is(w, "ball") || is(w, "red") || is(w, "blue") || is(w, "green") || is(w, "yellow")) {
     uint16_t color = is(w, "red") ? PINK : is(w, "blue") ? BLUE : is(w, "green") ? MINT : GOLD;
     c_.fillCircle(x, y, 30, color);
@@ -283,29 +290,37 @@ void Visuals::illustration(const char* w, int x, int y) {
   }
 }
 
-void Visuals::draw(uint32_t now) {
+void Visuals::draw(uint32_t now, bool book, unsigned page, unsigned pages) {
   float dt = previous_ ? fminf((uint32_t)(now - previous_) / 1000.f, .06f) : .033f;
   previous_ = now;
   c_.fillScreen(BG);
   c_.setTextColor(0x8c53, BG); c_.setTextDatum(top_left); c_.setTextFont(2); c_.setTextSize(1);
-  c_.drawString("little wonders", 10, 5);
-  c_.fillCircle(224, 12, 3, MINT);
+  c_.drawString(book ? "picture book" : "little wonders", 10, 5);
+  if (book) {
+    char counter[20]; snprintf(counter, sizeof(counter), "%u / %u", page + 1, pages);
+    c_.setTextDatum(top_right); c_.setTextFont(1); c_.drawString(counter, 230, 9);
+  } else c_.fillCircle(224, 12, 3, MINT);
   c_.fillEllipse(38, 151, 98, 30, 0x11e8); c_.fillEllipse(204, 160, 119, 40, 0x1209);
   for (int i = 0; i < 6; ++i) {
     int x = 20 + i * 41;
     int y = 35 + (i * 23) % 69 + sinf(now * .001f + i) * 3;
     c_.fillCircle(x, y, 1, 0x43ad);
   }
-  const bool showingWord = word_ && now - wordBorn_ < 4500;
+  const bool showingWord = word_ && (book || now - wordBorn_ < 4500);
   if (showingWord) {
     float t = (now - wordBorn_) / 1000.f;
+    wordTime_ = t;
     int bob = sinf(t * 3) * 3 + 6 * expf(-t * 8);
     int sway = sinf(t * 2) * 4;
     c_.fillEllipse(120, 98, 29, 3, 0x1949);
     illustration(wordIcon_, 120 + sway, 61 + bob);
     star(54, 52, 5, MINT, t * .3f); star(189, 72, 7, LILAC, -t * .3f);
-    c_.setTextDatum(top_center); c_.setTextColor(WHITE, BG); c_.setTextFont(4);
-    c_.drawString(word_, 120, 104);
+    c_.setTextDatum(top_center); c_.setTextColor(WHITE, BG); c_.setTextFont(book ? 2 : 4);
+    c_.drawString(word_, 120, book ? 100 : 104);
+    if (book) {
+      c_.setTextFont(1); c_.setTextColor(0x9cf5, BG);
+      c_.drawString("A/D browse  Enter listen  ` back", 120, 125);
+    }
   } else if (!activeKey_) {
     word_ = nullptr;
     int bob = sinf(now * .002f) * 4 - 9;

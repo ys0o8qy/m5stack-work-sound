@@ -50,7 +50,8 @@ bool Visuals::extendedIllustration(const char* w, int x, int y) {
       c_.drawWideLine(x+s*10,y-5,x+s*14,y-20,4,PEACH);c_.fillCircle(x+s*14,y-20,4,WHITE);c_.fillCircle(x+s*14,y-21,2,INK);}
     c_.fillEllipse(x,y+6,24,18,PEACH);
   } else if(is(w,"butterfly")) {
-    for(int s : {-1,1}) {c_.fillEllipse(x+s*20,y-13,20,22,LILAC);c_.fillEllipse(x+s*17,y+17,16,17,PINK);c_.fillCircle(x+s*23,y-15,8,GOLD);c_.drawLine(x,y-19,x+s*10,y-35,WHITE);}
+    float flap = .55f + .45f * fabsf(cosf(wordTime_ * 4));
+    for(int s : {-1,1}) {c_.fillEllipse(x+s*20*flap,y-13,20*flap,22,LILAC);c_.fillEllipse(x+s*17*flap,y+17,16*flap,17,PINK);c_.fillEllipse(x+s*23*flap,y-15,8*flap,8,GOLD);c_.drawLine(x,y-19,x+s*10,y-35,WHITE);}
     c_.fillRoundRect(x-4,y-23,8,48,4,PEACH);
   } else if(is(w,"snail")) {
     c_.fillRoundRect(x-32,y+16,68,13,6,MINT);c_.fillCircle(x-7,y,25,PEACH);
@@ -94,9 +95,8 @@ bool Visuals::extendedIllustration(const char* w, int x, int y) {
     c_.fillRoundRect(x-19,y-2,38,28,4,is(w,"juice")?PEACH:BLUE);
     c_.drawWideLine(x+8,y-8,x+15,y-36,3,MINT);
   } else if(is(w,"bowl") || is(w,"rice")) {
-    if(is(w,"rice")){c_.fillEllipse(x,y-8,31,18,WHITE);for(int i=0;i<8;++i)c_.drawLine(x-21+i*6,y-10,x-19+i*6,y-6,0xc638);}
-    c_.fillEllipse(x,y+5,35,24,BLUE);c_.fillRect(x-36,y-24,72,25,BG);
-    if(is(w,"rice"))c_.fillEllipse(x,y-3,30,8,WHITE);
+    c_.fillEllipse(x,y+5,35,24,BLUE);c_.fillRect(x-36,y-30,72,31,BG);
+    if(is(w,"rice")){c_.fillEllipse(x,y-3,30,8,WHITE);for(int i=0;i<8;++i)c_.drawLine(x-21+i*6,y-7,x-19+i*6,y-3,0xc638);}
     c_.drawWideLine(x-35,y,x+35,y,3,MINT);c_.fillRoundRect(x-17,y+25,34,5,2,BLUE);
   } else if(is(w,"spoon") || is(w,"fork")) {
     c_.fillRoundRect(x-4,y-1,8,35,4,BLUE);
@@ -109,11 +109,12 @@ bool Visuals::extendedIllustration(const char* w, int x, int y) {
     c_.fillRoundRect(x-42,y-21,52,43,6,is(w,"train")?MINT:PEACH);
     c_.fillRoundRect(x+7,y-9,34,31,5,GOLD);c_.fillRect(x+14,y-4,17,12,BLUE);
     if(is(w,"train")){c_.fillRect(x-32,y-34,12,17,MINT);c_.fillRect(x-5,y-32,13,23,MINT);c_.fillRect(x-1,y-27,6,11,BLUE);}
-    for(int i=0;i<3;++i){c_.fillCircle(x-28+i*28,y+23,9,INK);c_.fillCircle(x-28+i*28,y+23,4,WHITE);}
+    for(int i=0;i<3;++i){int wx=x-28+i*28;c_.fillCircle(wx,y+23,9,INK);c_.fillCircle(wx,y+23,4,WHITE);float a=wordTime_*4;c_.drawLine(wx-cosf(a)*7,y+23-sinf(a)*7,wx+cosf(a)*7,y+23+sinf(a)*7,WHITE);}
     c_.drawFastHLine(x-49,y+34,98,BLUE);
+    for(int i=0;i<5;++i){int tx=x-48+i*22-int(fmodf(wordTime_*18,22.f));c_.drawFastVLine(tx,y+34,4,BLUE);}
   } else if(is(w,"plane") || is(w,"rocket")) {
     if(is(w,"plane")){c_.fillTriangle(x-42,y+11,x+32,y+11,x+15,y-22,BLUE);c_.fillRoundRect(x-39,y-6,78,15,7,WHITE);c_.fillTriangle(x-34,y,x-35,y-22,x-19,y,WHITE);c_.fillTriangle(x-3,y,x+17,y+30,x+17,y,BLUE);for(int i=0;i<4;++i)c_.fillCircle(x-7+i*9,y,2,BLUE);}
-    else {c_.fillTriangle(x-14,y+20,x,y+38,x+14,y+20,GOLD);c_.fillTriangle(x-16,y-5,x-31,y+24,x+31,y+24,PINK);c_.fillEllipse(x,y-4,18,32,WHITE);c_.fillCircle(x,y-11,10,BLUE);c_.fillCircle(x-3,y-14,3,MINT);}
+    else {int flame=33+4*sinf(wordTime_*8);c_.fillTriangle(x-14,y+20,x,y+flame,x+14,y+20,GOLD);c_.fillTriangle(x-7,y+20,x,y+flame-4,x+7,y+20,PEACH);c_.fillTriangle(x-16,y-5,x-31,y+24,x+31,y+24,PINK);c_.fillEllipse(x,y-4,18,32,WHITE);c_.fillCircle(x,y-11,10,BLUE);c_.fillCircle(x-3,y-14,3,MINT);for(int s:{-1,1}){int sy=y-27+fmodf(wordTime_*23+(s+1)*12,52.f);c_.drawFastVLine(x+s*43,sy,6,BLUE);}}
   } else if(is(w,"bike")) {
     for(int s : {-1,1}){c_.drawCircle(x+s*27,y+15,19,BLUE);c_.drawCircle(x+s*27,y+15,17,BLUE);}
     c_.drawWideLine(x-27,y+15,x-10,y-12,3,GOLD);c_.drawWideLine(x-10,y-12,x+9,y+15,3,GOLD);c_.drawWideLine(x+9,y+15,x-27,y+15,3,GOLD);c_.drawWideLine(x-10,y-12,x+17,y-12,3,GOLD);c_.drawWideLine(x+17,y-12,x+9,y+15,3,GOLD);c_.drawWideLine(x+14,y-22,x+27,y+15,3,WHITE);c_.drawWideLine(x+14,y-22,x+25,y-24,3,WHITE);c_.drawWideLine(x-18,y-18,x-5,y-18,4,PINK);
@@ -122,7 +123,7 @@ bool Visuals::extendedIllustration(const char* w, int x, int y) {
     if(is(w,"snow"))for(int i=0;i<4;++i){int sx=x-27+i*18;for(int j=0;j<3;++j){float a=j*1.0472f;c_.drawLine(sx-cosf(a)*5,y+30-sinf(a)*5,sx+cosf(a)*5,y+30+sinf(a)*5,BLUE);}}
   } else if(is(w,"rainbow")) {
     uint16_t hues[]={PINK,PEACH,GOLD,MINT,BLUE,LILAC};
-    for(int i=0;i<6;++i)c_.fillCircle(x,y+22,43-i*5,hues[i]);c_.fillCircle(x,y+22,13,BG);c_.fillRect(x-44,y+22,89,24,BG);
+    for(int i=0;i<6;++i)c_.fillCircle(x,y+22,43-i*5,hues[i]);c_.fillCircle(x,y+22,13,BG);c_.fillRect(x-44,y+22,89,44,BG);
     c_.fillEllipse(x-33,y+22,17,7,WHITE);c_.fillEllipse(x+33,y+22,17,7,WHITE);
   } else if(is(w,"leaf")) {
     c_.fillEllipse(x,y-2,26,34,MINT);c_.drawWideLine(x,y-25,x,y+36,3,0x354d);
@@ -177,7 +178,7 @@ bool Visuals::extendedIllustration(const char* w, int x, int y) {
   } else if(is(w,"sleep") || is(w,"jump") || is(w,"big") || is(w,"small")) {
     int r=is(w,"small")?16:is(w,"big")?34:27;
     c_.fillCircle(x,y,r,MINT);face(x,y-4,is(w,"small")?6:10,is(w,"sleep"));
-    if(is(w,"sleep")){c_.setTextDatum(middle_center);c_.setTextFont(2);c_.setTextColor(WHITE);c_.drawString("z",x+29,y-20);c_.drawString("Z",x+40,y-32);}
+    if(is(w,"sleep")){int drift=3*sinf(wordTime_*2);c_.setTextDatum(middle_center);c_.setTextFont(2);c_.setTextColor(WHITE);c_.drawString("z",x+29,y-20+drift);c_.drawString("Z",x+40,y-32-drift);}
     if(is(w,"jump")){c_.drawWideLine(x-12,y+21,x-24,y+31,5,MINT);c_.drawWideLine(x+12,y+21,x+24,y+31,5,MINT);for(int s:{-1,1})c_.drawWideLine(x+s*37,y+17,x+s*37,y+30,2,GOLD);}
   } else return false;
   return true;

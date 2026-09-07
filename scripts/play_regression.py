@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Real-device regression for audible-effect lifecycle, motion and new vocabulary.
 
-Run after hardware_test.py, with the physical keyboard untouched. Assertions use
+Runs muted, restores normal volume; keep the physical keyboard untouched. Assertions use
 behavior and frame regions, never fixed images that fail on intentional art edits.
 """
 from pathlib import Path
@@ -27,7 +27,10 @@ def run():
     device = connect()
     original_timeout = None
     try:
+        command(device, 'mute on', '^OK muted$')
         status = command(device, 'status', 'STATUS')
+        assert field(status, 'muted') == 1
+        original_volume = field(status, 'volume')
         original_timeout = field(status, 'idle_ms')
         assert field(status, 'words') == len((ROOT / 'assets/words.txt').read_text().split())
         command(device, 'clear')
@@ -69,17 +72,27 @@ def run():
             send(device, 'type ' + word)
             until(device, rf'ROUND match={word} speech=1', 2)
             time.sleep(.1)
-            frame(device, OUT / f'word-{word}.ppm')
-            until(device, 'SPEECH finished', 2)
+            start = len(logs)
+            frame(device, OUT / f'word-{word}.ppm', on_line=logs.append)
+            # The end event may arrive while waiting for the frame header.
+            if 'SPEECH finished' not in logs[start:]:
+                until(device, 'SPEECH finished', 2)
         print('PASS expanded vocabulary speech and picture scenes', flush=True)
 
         # Input during speech stops only speech, then starts audible key feedback.
-        command(device, 'clear')
-        send(device, 'type watermelon')
-        until(device, 'ROUND match=watermelon speech=1', 2)
-        send(device, 'key b')
-        until(device, 'SPEECH interrupted')
-        event = until(device, '^KEY')
+        for attempt in range(3):
+            command(device, 'clear')
+            send(device, 'type watermelon')
+            until(device, 'ROUND match=watermelon speech=1', 2)
+            start = len(logs)
+            send(device, 'key b')
+            event = until(device, '^KEY')
+            if 'SPEECH interrupted' in logs[start:]: break
+            # A late host write is not an interruption test. Retry only when
+            # the device explicitly says speech finished before receiving it.
+            assert 'SPEECH finished' in logs[start:], 'speech failed to interrupt'
+        else:
+            raise AssertionError('Host missed all three speech windows; rerun without host load')
         status = command(device, 'status', 'STATUS')
         assert field(status, 'speech_playing') == 0
         assert field(event, 'effect_playing') > 0
@@ -89,7 +102,10 @@ def run():
         if original_timeout is not None:
             command(device, f'timeout {original_timeout}')
             command(device, 'clear')
-            command(device, 'status', 'STATUS')
+            time.sleep(.2)
+            command(device, 'mute off', '^OK unmuted$')
+            restored = command(device, 'status', 'STATUS')
+            assert field(restored, 'muted') == 0 and field(restored, 'volume') == original_volume
         device.close()
         (OUT / 'test.log').write_text('\n'.join(logs) + '\n')
 

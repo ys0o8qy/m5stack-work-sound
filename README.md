@@ -35,13 +35,29 @@
 默认等待 3 秒，音量 80/255，亮度 130/255；设置页面显示相对于硬件刻度的百分比。
 音量调整上限是 160/255；调整时立即播放短音，方便试听。
 
-首次启动的默认值集中在 [`include/toy_config.h`](include/toy_config.h)。
+首次启动的声音与计时默认值在 [`include/toy_config.h`](include/toy_config.h)，渐暗设置与升级结构在 [`include/parent_settings.h`](include/parent_settings.h)。
 已经保存过的设备设置优先于代码默认值；修改代码默认值不会覆盖设备已有设置。
 也可以从 USB 设置毫秒级等待时间，例如 6500 毫秒（同样会保存）：
 
 ```sh
 ./.venv/bin/python scripts/device.py 'timeout 6500'
 ```
+
+## 英语图鉴与情景动画
+
+长按 **G0** 进入家长设置，按 **S 三次**选中 **Picture book**，按 **Enter** 打开。
+
+- **A / D**：前后翻页，首尾循环。
+- **W / S**：前后跳 10 页。
+- **Enter**：朗读当前单词；翻页本身不发声，图鉴会一直保持打开。
+- **反引号**：回到家长设置；再按一次取消并回到玩具。
+
+可以浏览全部 143 个词。蝴蝶会扇翅、鱼会吐泡泡、火车车轮转动、雨滴下落等；
+这些情景动画也用于正常拼出单词后的展示。
+
+家长设置最后一项 **Dim screen after** 控制闲置渐暗：关闭、30、60、120 秒，默认 60 秒。
+到时背光在 1.5 秒内柔和降至 20/255；任意按键恢复亮度，第一下仍正常输入和发声。
+旧版设备升级后保留原有音量、亮度与停顿时间。侧面电源开关的操作不变。
 
 ## 识别规则与词库
 
@@ -110,6 +126,8 @@ Python 依赖记录在 `requirements-dev.lock`。
 
 ## 检查与调试
 
+完整回归用例和人工验收步骤见 [测试计划](docs/TEST_PLAN.md)。
+
 `./scripts/test.sh` 使用本机 C++ 编译器与 AddressSanitizer/UndefinedBehaviorSanitizer，
 检查等待边界、配置时间、长按计时、清空、大小写、无效字符、溢出、时钟回绕及全部音频素材。
 Python 用例同时检查词库不意外缩减、所有语音与图案完整、PCM 校验和、音效起音 RMS/峰值/频率范围。
@@ -121,10 +139,11 @@ Python 用例同时检查词库不意外缩减、所有语音与图案完整、P
 ```sh
 ./.venv/bin/python scripts/hardware_test.py
 ./.venv/bin/python scripts/play_regression.py
+./.venv/bin/python scripts/features_test.py
 ```
 
-执行时请先不要碰键盘；测试会发声，临时修改等待时间，重启设备验证设置持久化，
-最后恢复执行前的等待时间。通过 USB 注入的按键使用与实际键盘相同的输入、动画、播放路径，
+执行时请先不要碰键盘；测试默认临时静音，临时修改等待时间，重启设备验证设置持久化，
+最后停止播放并恢复原等待时间和正常音量，不改已保存的音量。通过 USB 注入的按键使用与实际键盘相同的输入、动画、播放路径，
 但不能替代实体键盘和人耳听感检查。
 
 读取当前设备绘制的画面（PPM）：
@@ -134,7 +153,7 @@ Python 用例同时检查词库不意外缩减、所有语音与图案完整、P
 sips -s format png artifacts/screen.ppm --out artifacts/screen.png
 ```
 
-串口还支持 `clear`、`tap`、`key c`、`type cat`、`backspace`、`settings`、`save`、`cancel`、`reboot`。
+串口新增 `book`、`listen`、`enter` 供图鉴调试；还支持临时静音 `mute on` / `mute off`（重启恢复正常音量），以及 `clear`、`tap`、`key c`、`type cat`、`backspace`、`settings`、`save`、`cancel`、`reboot`。
 这些只供 USB 调试，不出现在孩子的界面中。连接 USB 调试可能触发芯片复位。
 
 ## 原固件备份与恢复

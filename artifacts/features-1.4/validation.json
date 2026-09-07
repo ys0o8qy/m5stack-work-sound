@@ -1,0 +1,28 @@
+{
+  "version": "1.4",
+  "date": "2026-09-07",
+  "scope": [
+    "word-specific animated scenes",
+    "parent picture book",
+    "configurable idle dimming and first-key wake"
+  ],
+  "firmware_sha256": "a2e5b1a5f695a3d5c1a4597a3d571db6953d1ab953bdbe5ff9750e2a717a5349",
+  "verification": {
+    "host": "two C++ suites with ASan/UBSan and five Python tests passed",
+    "hardware_baseline": "passed muted",
+    "hardware_play": "passed muted",
+    "hardware_features": "passed muted",
+    "picture_book": "all 143 pages exported and visually reviewed",
+    "motion": "nine scene pairs reviewed",
+    "settings": "legacy values preserved, dim persistence/off/fade/wake passed"
+  },
+  "final_device": {
+    "idle_ms": 3000,
+    "volume": 80,
+    "brightness": 130,
+    "dim_ms": 60000,
+    "muted": false,
+    "book": false
+  },
+  "manual_audio": "not performed; automatic device tests are muted per user preference"
+}

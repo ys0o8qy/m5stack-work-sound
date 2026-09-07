@@ -11,7 +11,7 @@ class Visuals {
   void clearInput() { inputText_[0] = '\0'; activeKey_ = 0; deletedChar_ = 0; }
   void showWord(const char* word, const char* illustration, uint32_t now);
   void clearWord() { word_ = nullptr; }
-  void draw(uint32_t now);
+  void draw(uint32_t now, bool book = false, unsigned page = 0, unsigned pages = 0);
  private:
   struct Particle {
     float x = 0, y = 0, vx = 0, vy = 0, r = 0;
@@ -25,6 +25,7 @@ class Visuals {
   uint32_t previous_ = 0, wordBorn_ = 0, burstBorn_ = 0;
   const char* word_ = nullptr;
   const char* wordIcon_ = nullptr;
+  float wordTime_ = 0;
   uint16_t activeKey_ = 0;
   char inputText_[kMaxInput + 1] = {};
   char deletedChar_ = 0;

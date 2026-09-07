@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Integration test against the actual firmware through USB diagnostic commands.
 
-Temporarily changes/restores the idle timeout. Does not replace a physical key or
+Temporarily mutes output and changes/restores the idle timeout. Does not replace a physical key or
 listening test; exercises the real MCU state machine, renderer and speaker API.
 """
 from pathlib import Path
+import os
 import re
 import time
 from device import connect, send, frame
@@ -19,7 +20,8 @@ def until(device, pattern, seconds=3):
         line = device.readline().decode(errors='replace').strip()
         if line:
             logs.append(line)
-            print(line, flush=True)
+            if os.environ.get('TOY_TEST_VERBOSE') == '1':
+                print(line, flush=True)
             if 'ERROR' in line or 'Guru Meditation' in line:
                 raise AssertionError(line)
             if re.search(pattern, line): return line
@@ -35,9 +37,11 @@ def run():
     device = connect()
     original_timeout = None
     try:
+        command(device, 'mute on', '^OK muted$')
         status = command(device, 'status', 'STATUS')
         original_timeout = int(re.search(r'idle_ms=(\d+)', status)[1])
-        assert 'speaker=1' in status and 'canvas=1' in status and 'prefs=1' in status
+        assert 'speaker=1' in status and 'canvas=1' in status and 'prefs=1' in status and 'muted=1' in status
+        original_volume = int(re.search(r'volume=(\d+)', status)[1])
         initial_heap = int(re.search(r'heap=(\d+)', status)[1])
         command(device, 'clear')
         signatures = []
@@ -75,8 +79,10 @@ def run():
         result = until(device, r'ROUND match=cat speech=1', 4)
         match_ms = int(re.search(r'at_ms=(\d+)', result)[1])
         assert 3000 <= match_ms - last_key_ms <= 3100, (last_key_ms, match_ms)
-        frame(device, ROOT / 'artifacts/cat.ppm')
-        until(device, 'SPEECH finished')
+        frame_start = len(logs)
+        frame(device, ROOT / 'artifacts/cat.ppm', on_line=logs.append)
+        if 'SPEECH finished' not in logs[frame_start:]:
+            until(device, 'SPEECH finished')
         print('PASS default 3-second deadline + actual speech playback lifecycle', flush=True)
 
         command(device, 'timeout 1000')
@@ -86,16 +92,27 @@ def run():
             until(device, 'ROUND no-match', 2)
         print('PASS invalid words, whole-round matching, symbols and overflow', flush=True)
 
-        command(device, 'clear')
-        send(device, 'type dog')
-        until(device, 'ROUND match=dog speech=1', 2)
-        send(device, 'key c')
-        until(device, 'SPEECH interrupted')
-        until(device, '^KEY')
-        send(device, 'key a'); until(device, '^KEY')
-        time.sleep(.65)
-        send(device, 'key t')
-        last = until(device, '^KEY')
+        for attempt in range(3):
+            command(device, 'clear')
+            send(device, 'type dog')
+            until(device, 'ROUND match=dog speech=1', 2)
+            start = len(logs)
+            send(device, 'key c')
+            until(device, '^KEY')
+            if 'SPEECH interrupted' in logs[start:]: break
+            assert 'SPEECH finished' in logs[start:], 'speech failed to interrupt'
+        else: raise AssertionError('Host missed all three interruption windows')
+
+        for attempt in range(3):
+            command(device, 'clear')
+            send(device, 'type ca'); until(device, '^KEY'); first = until(device, '^KEY')
+            time.sleep(.25)
+            send(device, 'key t'); last = until(device, '^KEY')
+            gap = int(re.search(r'at_ms=(\d+)', last)[1]) - int(re.search(r'at_ms=(\d+)', first)[1])
+            if gap >= 1000: continue  # Host scheduling missed the input window.
+            assert 'length=3 ' in last
+            break
+        else: raise AssertionError('Host missed all three input reset windows')
         last_ms = int(re.search(r'at_ms=(\d+)', last)[1])
         match = until(device, 'ROUND match=cat speech=1', 2)
         end_ms = int(re.search(r'at_ms=(\d+)', match)[1])
@@ -114,6 +131,7 @@ def run():
         device.close()
         time.sleep(2)
         device = connect()
+        command(device, 'mute on', '^OK muted$')
         status = command(device, 'status', 'STATUS')
         assert 'idle_ms=2000' in status
         print('PASS parent settings save and persistence across reboot', flush=True)
@@ -134,7 +152,11 @@ def run():
         if original_timeout is not None:
             command(device, f'timeout {original_timeout}')
             command(device, 'clear')
-            command(device, 'status', 'STATUS')
+            time.sleep(.2)  # Drain the output buffer while still muted.
+            command(device, 'mute off', '^OK unmuted$')
+            restored = command(device, 'status', 'STATUS')
+            assert 'muted=0' in restored
+            assert int(re.search(r'volume=(\d+)', restored)[1]) == original_volume
         device.close()
         (ROOT / 'artifacts/hardware-test.log').write_text('\n'.join(logs) + '\n')
     print('PASS all USB integration checks; original timeout restored', flush=True)

@@ -39,7 +39,7 @@ def send(device, command):
     device.flush()
 
 
-def frame(device, path):
+def frame(device, path, on_line=None):
     send(device, 'frame')
     deadline = time.monotonic() + 5
     size = None
@@ -48,6 +48,8 @@ def frame(device, path):
         if line.startswith(b'FRAME '):
             size = int(line.split()[1])
             break
+        if line and on_line:
+            on_line(line.decode('utf-8', errors='replace').strip())
     if size != 240 * 135 * 3:
         raise RuntimeError(f'Invalid frame header: {size}')
     data = bytearray()

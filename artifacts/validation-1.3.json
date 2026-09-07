@@ -1,0 +1,16 @@
+{
+  "firmware": "Little Wonders 1.3",
+  "date": "2026-09-07",
+  "firmware_sha256": "479b8ed139ce2e3a68177ce9a3a140a6742b8128e32a2add532256b5f3c5041b",
+  "words": 143,
+  "illustrations": 121,
+  "effects": 20,
+  "default_idle_ms": 3000,
+  "device_volume": 80,
+  "device_brightness": 130,
+  "host_tests": "passed (C++ ASan/UBSan and 5 Python tests)",
+  "hardware_baseline": "passed muted",
+  "hardware_play_regression": "passed muted",
+  "manual_listening": "pending user feedback; automatic verification muted",
+  "mcp_removal": "project rules removed; global removal awaits explicit approval after auto-review rejection"
+}
